@@ -45,4 +45,5 @@ terraform/**/*.crash.log
 terraform/**/*.log
 
 # Ignore hcl lock files
-terraform/**/*.terraform.lock.hcl
+terraform/**/*.hcl
+terraform/**/*.lock.info
