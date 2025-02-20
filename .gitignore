@@ -43,6 +43,6 @@ terraform/**/*.tfworkspace
 terraform/**/*.tfstate.d/
 terraform/**/*.crash.log
 terraform/**/*.log
-terraform/**/*.hcl
 
-
+# Ignore hcl lock files
+terraform/**/*.terraform.lock.hcl
