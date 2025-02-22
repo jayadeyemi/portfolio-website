@@ -1,7 +1,7 @@
 
 # API Gateway REST API
 resource "aws_api_gateway_rest_api" "data_api" {
-  name = var.api_name
+  name = var.api_gateway_name
 }
 
 # Create a resource endpoint (e.g. /data)
@@ -26,7 +26,7 @@ resource "aws_api_gateway_integration" "lambda_integration" {
   http_method             = aws_api_gateway_method.get_data.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = lambda_function_arn
+  uri                     = var.lambda_function_arn
 }
 
 # Deploy the API Gateway

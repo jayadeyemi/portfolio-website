@@ -1,8 +1,8 @@
 # CloudFront distribution in front of the S3 bucket
 resource "aws_cloudfront_distribution" "static_site_distribution" {
   origin {
-    domain_name = aws_s3_bucket.static_site.bucket_regional_domain_name
-    origin_id   = var.origin_domain_name
+    domain_name = var.cloudfront_origin_domain_name
+    origin_id   = var.cloudfront_origin_id
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
     }
@@ -16,7 +16,7 @@ resource "aws_cloudfront_distribution" "static_site_distribution" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id = var.origin_domain_name
+    target_origin_id = var.cloudfront_origin_id
     forwarded_values {
       query_string = false
       cookies {

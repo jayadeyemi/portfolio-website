@@ -37,13 +37,13 @@ __pycache__/
 # Ignore Terraform state files inside terraform/ and subdirectories
 terraform/**/*.tfstate
 terraform/**/*.tfstate.backup
-terraform/**/*.tfplan
+terraform/**/tfplan
 terraform/**/*.tfplan.json
 terraform/**/*.tfworkspace
 terraform/**/*.tfstate.d/
 terraform/**/*.crash.log
 terraform/**/*.log
-
+terraform/terraform.tfvars
 # Ignore hcl lock files
 terraform/**/*.hcl
 terraform/**/*.lock.info
