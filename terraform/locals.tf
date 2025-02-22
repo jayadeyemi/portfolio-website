@@ -14,35 +14,36 @@ locals {
   lambda_py_zip        = "../lambda/lambda_function.zip"
   website_domain_name  = "www.babasanmiadeyemiportfolio.com"
   s3_bucket_name       = "${local.resource_prefix}-bucket-${random_integer.random_id.result}"
-
-  interactive_index = templatefile("../app/interactive/interactive.html.tmpl", {
-    cloudfront_domain = data.aws_cloudfront_distribution.portfolio_cf.domain_name
+  
+  interactive_index    = templatefile("../app/interactive/interactive.html.tmpl", {
+    cloudfront_domain     = data.aws_cloudfront_distribution.portfolio_cf.id
   })
+  
   s3_files = {
     static_index = {
-      s3_key       = "static/index.html"
-      source       = "../app/static/index.html"
-      content_type = "text/html"
+      s3_key              = "static/index.html"
+      source              = "../app/static/index.html"
+      content_type        = "text/html"
     },
-    static_css = {
-      s3_key       = "static/styles.css"
-      source       = "../app/static/styles.css"
-      content_type = "text/css"
+    static_css   = {
+      s3_key              = "static/styles.css"
+      source              = "../app/static/styles.css"
+      content_type        = "text/css"
     },
     interactive_html = {
-      s3_key       = "interactive/interactive.html"
-      source       = local.interactive_index
-      content_type = "text/html"
+      s3_key              = "interactive/interactive.html"
+      source              = local.interactive_index
+      content_type        = "text/html"
     },
     interactive_css = {
-      s3_key       = "interactive/styles.css"
-      source       = "../app/interactive/styles.css"
-      content_type = "text/css"
+      s3_key              = "interactive/styles.css"
+      source              = "../app/interactive/styles.css"
+      content_type        = "text/css"
     },
     interactive_js = {
-      s3_key       = "interactive/scripts/main.js"
-      source       = "../app/interactive/scripts/main.js"
-      content_type = "application/javascript"
+      s3_key              = "interactive/scripts/main.js"
+      source              = "../app/interactive/scripts/main.js"
+      content_type        = "application/javascript"
     }
   }
 }
