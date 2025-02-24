@@ -10,7 +10,7 @@ resource "aws_cloudfront_distribution" "static_site_distribution" {
 
   enabled             = true
   is_ipv6_enabled     = true
-  default_root_object = "index.html"
+  default_root_object = "static/index.html"
  
   # Default cache behavior
   default_cache_behavior {
@@ -31,10 +31,10 @@ resource "aws_cloudfront_distribution" "static_site_distribution" {
 
   # Ordered behavior for dynamic visualization data
   ordered_cache_behavior {
-    path_pattern     = "/visualization/data.json"
+    path_pattern     = "/data/spotify_data.json"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
-    target_origin_id = "S3-interactive-site"
+    target_origin_id = var.cloudfront_origin_id
     forwarded_values {
       query_string = false
       cookies {

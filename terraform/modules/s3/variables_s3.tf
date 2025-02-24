@@ -3,8 +3,8 @@ variable "s3_bucket_name" {
   type        = string
 }
 
-variable "origin_access_identity" {
-  description = "The origin access identity for CloudFront"
+variable "cloudfront_oai_canonical_user_id" {
+  description = "The canonical user ID of the CloudFront Origin Access Identity"
   type        = string
 }
 

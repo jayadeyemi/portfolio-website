@@ -9,6 +9,12 @@ variable "cloudfront_domain_name" {
 }
 
 variable "cloudfront_hosted_zone_id" {
-  description = "The hosted zone ID of the CloudFront distribution"
+  description = "The ID of the CloudFront hosted zone"
+  type        = string
+  
+}
+
+variable "route53_hosted_zone_id" {
+  description = "The ID of the Route 53 hosted zone"
   type        = string
 }

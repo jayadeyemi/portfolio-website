@@ -31,3 +31,8 @@ variable "sns_topic_name" {
   description = "SNS topic name for Lambda failure notifications"
   type        = string
 }
+
+variable "portfolio_secret_name" {
+  description = "The name of the secret in Secrets Manager"
+  type        = string
+}

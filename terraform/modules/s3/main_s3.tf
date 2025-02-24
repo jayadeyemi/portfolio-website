@@ -20,24 +20,15 @@ resource "aws_s3_bucket_ownership_controls" "static_site_ownership" {
   }
 }
 
-resource "aws_s3_bucket_acl" "static_site_acl" {
-  depends_on = [
-    aws_s3_bucket_ownership_controls.static_site_ownership,
-    aws_s3_bucket_public_access_block.static_site_private_access
-  ]
-
-  bucket = aws_s3_bucket.website_bucket.id
-  acl    = "public-read"
-}
-
 resource "aws_s3_object" "files" {
   for_each     = var.s3_files
   bucket       = aws_s3_bucket.website_bucket.id
   key          = each.value.s3_key
-  source       = each.value.source
   content_type = each.value.content_type
-}
 
+  source = substr(trimspace(each.value.source), 0, 9) != "<!DOCTYPE" ? each.value.source : null
+  content = substr(trimspace(each.value.source), 0, 9) == "<!DOCTYPE" ? each.value.source : null
+}
 
 resource "aws_s3_bucket_policy" "static_site_policy" {
   bucket = aws_s3_bucket.website_bucket.id
@@ -49,7 +40,7 @@ resource "aws_s3_bucket_policy" "static_site_policy" {
         "Sid": "AllowCloudFrontAccess",
         "Effect": "Allow",
         "Principal": {
-          "AWS": "${var.origin_access_identity}"
+          "CanonicalUser": var.cloudfront_oai_canonical_user_id
         },
         "Action": "s3:GetObject",
         "Resource": "${aws_s3_bucket.website_bucket.arn}/*"
@@ -57,4 +48,3 @@ resource "aws_s3_bucket_policy" "static_site_policy" {
     ]
   })
 }
-

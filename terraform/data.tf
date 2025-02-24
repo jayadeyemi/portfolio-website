@@ -1,3 +1,4 @@
-data "aws_cloudfront_distribution" "portfolio_cf" {
-  id = module.cloudfront.cloudfront_domain_name
+data "aws_route53_zone" "selected" {
+  name         = "${var.website_domain_name}."
+  private_zone = false
 }

@@ -3,7 +3,7 @@ build/
 dist/
 
 # Logs
-*.log
+terraform/**/logs
 
 # VS Code settings and workspace files
 .vscode/
@@ -26,6 +26,7 @@ node_modules/
 # Python caches (if using Python)
 __pycache__/
 *.py
+*.ipynb
 
 # Ignore Terraform hidden directories
 .terraform/
@@ -47,3 +48,4 @@ terraform/terraform.tfvars
 # Ignore hcl lock files
 terraform/**/*.hcl
 terraform/**/*.lock.info
+terraform/**/terraform.secrets.tfvars

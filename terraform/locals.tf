@@ -2,6 +2,9 @@
 resource "random_integer" "random_id" {
   min = 1000
   max = 9999
+  lifecycle {
+    prevent_destroy = true 
+  }
 }
 
 locals {
@@ -15,8 +18,10 @@ locals {
   website_domain_name  = "www.babasanmiadeyemiportfolio.com"
   s3_bucket_name       = "${local.resource_prefix}-bucket-${random_integer.random_id.result}"
   
-  interactive_index    = templatefile("../app/interactive/interactive.html.tmpl", {
-    cloudfront_domain     = data.aws_cloudfront_distribution.portfolio_cf.id
+  interactive_js       = templatefile("../app/interactive/scripts/main.js.tmpl", {
+    cloudfront_domain     = module.cloudfront.cloudfront_domain_name,
+    api_id                = module.api_gateway.rest_api_id,
+    region                = var.aws_region
   })
   
   s3_files = {
@@ -32,7 +37,7 @@ locals {
     },
     interactive_html = {
       s3_key              = "interactive/interactive.html"
-      source              = local.interactive_index
+      source              = "../app/interactive/interactive.html"
       content_type        = "text/html"
     },
     interactive_css = {
@@ -42,7 +47,7 @@ locals {
     },
     interactive_js = {
       s3_key              = "interactive/scripts/main.js"
-      source              = "../app/interactive/scripts/main.js"
+      source              = local.interactive_js
       content_type        = "application/javascript"
     }
   }
