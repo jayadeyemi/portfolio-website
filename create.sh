@@ -7,7 +7,7 @@ echo $secret_arn
 
 # Step 2: Check if the secret does not exist, then create the secret
 if [ -z "$secret_arn" ]; then
-    secret_arn=$(aws secretsmanager create-secret --name SpotifyCredentials --query ARN --output text)
+    secret_arn=$(aws secretsmanager create-secret --name SpotifyCredentials --secret-string '{}' --query ARN --output text)
     echo $secret_arn
 fi
 
@@ -19,7 +19,7 @@ terraform init
 terraform import module.secretsmanager.aws_secretsmanager_secret.spotify_secret $secret_arn
 terraform plan -out=tfplan -var-file=terraform.tfvars
 
-# Step 5: Pronpt the user to confirm the plan
+# Step 5: Prompt the user to confirm the plan
 read -p "Do you want to apply the plan? (y/n): " confirm
 if [ "$confirm" != "y" ]; then
     exit 0

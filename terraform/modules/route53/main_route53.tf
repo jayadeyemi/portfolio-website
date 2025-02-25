@@ -1,3 +1,8 @@
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+}
+
 # Route 53 DNS record to point your domain to CloudFront
 resource "aws_route53_record" "static_site_record" {
   zone_id = var.route53_hosted_zone_id

@@ -15,7 +15,7 @@ locals {
   lambda_function_name = "${local.resource_prefix}-lambda-function"
   sns_topic_name       = "${local.resource_prefix}-sns-topic"
   lambda_py_zip        = "../lambda/lambda_function.zip"
-  website_domain_name  = "www.babasanmiadeyemiportfolio.com"
+  website_domain_name  = var.website_domain_name
   s3_bucket_name       = "${local.resource_prefix}-bucket-${random_integer.random_id.result}"
   
   interactive_js       = templatefile("../app/interactive/scripts/main.js.tmpl", {
@@ -26,17 +26,17 @@ locals {
   
   s3_files = {
     static_index = {
-      s3_key              = "static/index.html"
+      s3_key              = "index.html"
       source              = "../app/static/index.html"
       content_type        = "text/html"
     },
     static_css   = {
-      s3_key              = "static/styles.css"
+      s3_key              = "styles.css"
       source              = "../app/static/styles.css"
       content_type        = "text/css"
     },
     interactive_html = {
-      s3_key              = "interactive/interactive.html"
+      s3_key              = "interactive/index.html"
       source              = "../app/interactive/interactive.html"
       content_type        = "text/html"
     },
@@ -47,8 +47,13 @@ locals {
     },
     interactive_js = {
       s3_key              = "interactive/scripts/main.js"
-      source              = local.interactive_js
+      source              = local_file.script_file.filename
       content_type        = "application/javascript"
     }
   }
+}
+
+resource "local_file" "script_file" {
+  content  = local.interactive_js
+  filename = "../app/interactive/scripts/main.js"
 }

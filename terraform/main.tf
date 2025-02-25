@@ -10,6 +10,7 @@ module "cloudfront" {
   source                        = "./modules/cloudfront"
   cloudfront_origin_domain_name = module.s3.bucket_regional_domain_name
   cloudfront_origin_id          = local.cloudfront_origin_id
+  website_domain_name           = var.website_domain_name
 }
 
 module "iam" {
