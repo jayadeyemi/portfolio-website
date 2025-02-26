@@ -8,7 +8,7 @@ resource "random_integer" "random_id" {
 }
 
 locals {
-  resource_prefix                 = "${var.project_name}-${var.environment}"
+  resource_prefix                 = "${var.project_name}"
   lambda_zip_path                 = "${var.lambda_path}${var.lambda_filename}"
   lambda_role_name                = "${local.resource_prefix}-lambda-role"
   lambda_policy_name              = "${local.resource_prefix}-lambda-policy"

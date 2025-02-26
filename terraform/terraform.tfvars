@@ -6,7 +6,6 @@ aws_region = "us-east-2"   # e.g. "us-east-1"
 
 # Profile Variables
 project_name                = "portfolio"
-environment                 = "prod"
 website_domain_name         = ""   # e.g. "example.com"
 secrets_manager_secret_name = "credentials"
 

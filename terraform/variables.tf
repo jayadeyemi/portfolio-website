@@ -9,18 +9,9 @@ variable "project_name" {
   type        = string
 } 
 
-variable "environment" {
-  description = "The environment"
-  type        = string
-}
 
 variable "website_domain_name" {
   description = "The website domain name"
-  type        = string
-}
-
-variable "sns_subscription_email" {
-  description = "The email address to subscribe to the SNS topic"
   type        = string
 }
 

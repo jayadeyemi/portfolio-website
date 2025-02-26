@@ -17,7 +17,7 @@ terraform init
 
 # Step 4: Import the existing secret into the terraform state and create the plan
 terraform import module.secretsmanager.aws_secretsmanager_secret.spotify_secret $secret_arn
-terraform plan -out=tfplan -var-file=terraform.tfvars
+terraform plan -out=tfplan -var-file=secrets.tfvars
 
 # Step 5: Prompt the user to confirm the plan
 read -p "Do you want to apply the plan? (y/n): " confirm

@@ -48,9 +48,21 @@ module "route53" {
 module "s3" {
   source                      = "./modules/s3"
   project_name                = var.project_name
-  bucket_name                 = local.bucket_name
-  s3_files                    = local.s3_files_list
+  bucket_name                 = local.bucket_name  
+}
+
+module "s3_policy" {
+  source                      = "./modules/s3_policy"
+  bucket_name                 = module.s3.bucket_name         # Ensure your S3 module outputs the bucket name
+  bucket_arn                  = module.s3.s3_bucket_arn       # Ensure your S3 module outputs the bucket ARN
   cloudfront_distribution_arn = module.cloudfront.cloudfront_distribution_arn
+}
+
+module "s3_uploads" {
+  source                      = "./modules/s3_uploads"
+  s3_files                    = local.s3_files_list
+  s3_bucket_id                = module.s3.s3_bucket_id
+  
 }
 
 module "secretsmanager" {
