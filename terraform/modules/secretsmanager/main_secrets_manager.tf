@@ -1,5 +1,6 @@
 resource "aws_secretsmanager_secret" "spotify_secret" {
-  name = "SpotifyCredentials"
+  name = var.secrets_manager_secret_name
+  description = "Secret for storing Spotify credentials"
 
   # This lifecycle block prevents Terraform from destroying the secret
   # if someone runs 'terraform destroy' or removes it from state.

@@ -1,6 +1,6 @@
 # IAM role for Lambda execution
 resource "aws_iam_role" "lambda_exec_role" {
-  name = var.iam_role_name
+  name = var.lambda_role_name
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
@@ -14,7 +14,7 @@ resource "aws_iam_role" "lambda_exec_role" {
 }
 
 resource "aws_iam_role_policy" "lambda_policy" {
-  name = "lambda_policy"
+  name = var.lambda_policy_name
   role = aws_iam_role.lambda_exec_role.id
   policy = jsonencode({
     Version   = "2012-10-17",
@@ -35,19 +35,13 @@ resource "aws_iam_role_policy" "lambda_policy" {
           "s3:GetObject",
           "s3:ListBucket"
         ],
-        Resource = [
-          var.s3_bucket_arn,
-          "${var.s3_bucket_arn}/*"
-        ]
+        Resource = var.lambda_s3_resource_arn 
       },
       {
         Effect   = "Allow",
         Action   = [ "secretsmanager:GetSecretValue" ],
-        Resource = "*"  // Adjust to a specific ARN if possible.
+        Resource = var.lambda_secrets_manager_arn
       }
     ]
   })
 }
-
-
-

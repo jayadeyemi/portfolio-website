@@ -1,12 +1,15 @@
-variable "s3_bucket_name" {
+variable "project_name" {
+  description = "The name of the project"
+  type        = string
+  
+}
+
+variable "bucket_name" {
   description = "The name of the S3 bucket"
   type        = string
 }
 
-variable "cloudfront_oai_canonical_user_id" {
-  description = "The canonical user ID of the CloudFront Origin Access Identity"
-  type        = string
-}
+
 
 variable "s3_files" {
   description = "Mapping of files to be uploaded to S3"
@@ -15,4 +18,8 @@ variable "s3_files" {
     source       = string
     content_type = string
   }))
+}
+variable "cloudfront_distribution_arn" {
+  description = "The ARN of the CloudFront distribution"
+  type        = string
 }

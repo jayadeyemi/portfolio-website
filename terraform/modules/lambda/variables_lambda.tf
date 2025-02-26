@@ -3,14 +3,9 @@ variable "lambda_function_name" {
   type        = string
 }
 
-variable "lambda_py_zip" {
+variable "lambda_zip_path" {
   description = "The path to the zipped Python Lambda function code"
   type        = string
-}
-
-variable "api_gateway_rest_api_arn" {
-  description = "ID of the API Gateway"
-  type        = string  
 }
 
 variable "lambda_role_arn" {
@@ -18,21 +13,18 @@ variable "lambda_role_arn" {
   type        = string
 }
 
-variable "aws_region" {
-  description = "AWS region"
-  }
-
-variable "s3_bucket_name" {
-  description = "S3 bucket name to store Spotify data and website assets"
+variable "lambda_runtime" {
+  description = "The runtime for the Lambda function"
   type        = string
 }
 
-variable "sns_topic_name" {
-  description = "SNS topic name for Lambda failure notifications"
+variable "lambda_filename" {
+  description = "The filename of the Lambda function code"
   type        = string
 }
 
-variable "portfolio_secret_name" {
-  description = "The name of the secret in Secrets Manager"
-  type        = string
+variable "lambda_environment_variables" {
+  description = "Environment variables for the Lambda function"
+  type        = map(string)
 }
+
