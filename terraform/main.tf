@@ -53,13 +53,6 @@ module "s3" {
   cloudfront_distribution_arn = module.cloudfront.cloudfront_distribution_arn
 }
 
-module "sns" {
-  source                  = "./modules/sns"
-  sns_topic_name          = local.sns_topic_name
-  lambda_function_name    = local.lambda_function_name
-  sns_subscription_email  = var.sns_subscription_email
-}
-
 module "secretsmanager" {
   source                      = "./modules/secretsmanager"
   secrets_manager_secret_name = var.secrets_manager_secret_name
