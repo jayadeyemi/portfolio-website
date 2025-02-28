@@ -8,10 +8,10 @@ output "cloudfront_origin_access_control_id" {
   value       = aws_cloudfront_origin_access_control.oac.id
 }
 
-# output "cloudfront_hosted_zone_id" {
-#   description = "The hosted zone ID of the CloudFront distribution"
-#   value       = aws_cloudfront_distribution.static_site_distribution.hosted_zone_id
-# }
+output "cloudfront_distribution_hosted_zone_id" {
+  description = "The hosted zone ID of the CloudFront distribution"
+  value       = aws_cloudfront_distribution.this.hosted_zone_id
+}
 
 output "cloudfront_distribution_id" {
   description = "The ID of the CloudFront distribution"

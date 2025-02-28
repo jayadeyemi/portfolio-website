@@ -54,36 +54,6 @@ variable "cloudfront_price_class" {
   default = "PriceClass_100"
 }
 
-variable "home_html" {
-  description = "The path to the home HTML file"
-  type        = string
-}
-
-variable "home_css" {
-  description = "The path to the home CSS file"
-  type        = string
-}
-
-variable "spotify_html" {
-  description = "The path to the Spotify HTML file"
-  type        = string
-}
-
-variable "spotify_css" {
-  description = "The path to the Spotify CSS file"
-  type        = string
-}
-
-variable "spotify_js" {
-  description = "The path to the Spotify JavaScript file"
-  type        = string
-}
-
-variable "spotify_js_template" {
-  description = "The path to the Spotify JavaScript template file"
-  type        = string
-}
-
 variable "frontend_path" {
   description = "The path to the frontend files"
   type        = string
@@ -93,7 +63,21 @@ variable "website_alternative_names" {
   description = "Alternative names for the website"
   type        = list(string)
   default     = []
-  
+}
+
+variable "lambda_file" {
+  description = "The name of the Lambda function file"
+  type        = string  
+}
+
+variable "s3_file_list" {
+  description = "List of files to upload to S3"
+  type        = list(string)
+}
+
+variable "spotify_js_template" {
+  description = "The template file for the Spotify JavaScript"
+  type        = string
 }
 ################################################################################
 # End of File

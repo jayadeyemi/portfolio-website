@@ -18,11 +18,6 @@ variable "lambda_runtime" {
   type        = string
 }
 
-variable "lambda_filename" {
-  description = "The filename of the Lambda function code"
-  type        = string
-}
-
 variable "lambda_environment_variables" {
   description = "Environment variables for the Lambda function"
   type        = map(string)

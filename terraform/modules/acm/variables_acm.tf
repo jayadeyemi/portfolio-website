@@ -14,12 +14,13 @@ variable "subject_alternative_names" {
   default     = []
 }
 
-variable "route53_zone_id" {
-  type        = string
-  description = "Route53 hosted zone ID for DNS validation"
-}
 
 variable "acm_certificate_name" {
   type        = string
   description = "Name tag for the ACM certificate"
+}
+
+variable "route53_hosted_zone_id" {
+  type        = string
+  description = "The ID of the Route 53 hosted zone for DNS validation"
 }

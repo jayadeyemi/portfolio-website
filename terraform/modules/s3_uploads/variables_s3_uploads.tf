@@ -3,7 +3,7 @@ variable "s3_bucket_id" {
   type        = string
 }
 
-variable "s3_files" {
+variable "s3_files_map" {
   description = "Mapping of files to be uploaded to S3"
   type = map(object({
     s3_key       = string
@@ -11,3 +11,4 @@ variable "s3_files" {
     content_type = string
   }))
 }
+
