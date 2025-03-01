@@ -1,16 +1,122 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Welcome to Our Site</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <h1>Welcome to Our Static Webpage</h1>
-    <p>This page is served from S3 and accelerated with CloudFront.</p>
-    <!-- Button to navigate to the interactive page -->
-    <a href="/myspotify/index.html">
-      <button>Click to login to Spotify to see playlist summary statistics</button>
-    </a>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Homepage</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-container">
+      <h1>Welcome to My Portfolio Webpage</h1>
+      <img src="profile_pic.jpg" alt="Jimi Adeyemi" class="profile-pic">
+    </div>
+    <nav>
+      <a href="#about">About Me</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="section-container">
+      <h2>Contact</h2>
+      <p>
+        I'd love to connect! Whether you have an opportunity, a project idea, or just want to say hello, feel free to reach out.
+      </p>
+      <p>
+        Email: <a href="mailto:babasanmiadeyemi@gmail.com">babasanmiadeyemi@gmail.com</a><br>
+        LinkedIn: <a href="https://www.linkedin.com/in/jayadeyemi" target="_blank">linkedin.com/in/jayadeyemi</a><br>
+        Instagram: <a href="https://www.instagram.com/jayadeyemi" target="_blank">instagram.com/jayadeyemi</a>
+        GitHub: <a href="https://https://github.com/jayadeyemi/" target="_blank">github.com/jayadeyemi</a>
+      </p>
+    </section>
+
+  <!-- About Me Section -->
+  <section id="about" class="section-container">
+    <h2>About Me</h2>
+    <p>
+      Hello! I’m <strong>Babasanmi Adeyemi</strong>, but everyone calls me Jimi. I'm a dedicated Data Engineer with a passion for transforming raw data into strategic assets. 
+      I specialize in designing and implementing <strong>scalable, robust data pipelines</strong> and cloud-native architectures that empower 
+      organizations to make data-driven decisions.
+    </p>
+    <p>
+      I am interested in growing my knowledge in <strong>Data Engineering and Cloud Architecting</strong>. My interest has led me to grow my knowledge in Infrastructure as Code 
+      using <strong>Terraform</strong>, <strong>CI/CD</strong> pipelines, <strong>SQL</strong>, <strong>NoSQL</strong>, <strong>ETL</strong>, <strong>data modeling</strong>, 
+      and <strong>data warehousing</strong>.
+      I excel at automating complex ETL processes, optimizing data workflows, and ensuring secure, repeatable, high-performance deployments.
+    </p>
+    <p>
+      My expertise lies in transforming vast, complex datasets into clear, actionable insights through <strong>engaging visualizations</strong> and 
+      smart data management strategies. By leveraging cloud technologies and automation, I can help businesses unlock the full potential of their data, 
+      driving operational excellence and business growth.
+    </p>
+    <p>
+      I have hands-on experience with a variety of tools and technologies, and have worked with clients across diverse industries, including FCMG, Oil & Gas, Utilities, and Telecommunications.
+      I’m always up for a new challenge and love learning new things, so feel free to reach out if you’d like to connect or collaborate on a project!
+      I am always eager to tackle new challenges and collaborate with talented teams to deliver innovative solutions that drive business success.
+    </p>
+    <p>
+      When I’m not coding or building data pipelines, you can find me exploring the great outdoors, chilling with friends, or enjoying a good book. 
+      I’m also a big fan of music and love discovering new artists and tracks on Spotify.
+    </p>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="section-container">
+    <h2>Projects</h2>
+
+    <!-- My Portfolio Website Project -->
+    <article>
+      <h3>Project 1: My Portfolio Website Project</h3>
+      <p>
+        The current website is a personal project I created to showcase my work and skills.
+        It includes an overview of my background, selected projects, and 
+        contact information.
+        It is still under construction and I will be adding more features soon.
+      </p>
+      <p>
+        <strong>Key Features:</strong>
+        <ul>
+          <li>Built with HTML, CSS, JavaScript for the frontend.</li>
+          <li>Lambda, DynamoDB, and S3 for the backend.</li>
+          <li>Certificate Manager for HTTPS support.</li>
+          <li>Hosted on AWS with CloudFront for fast global delivery.</li>
+          <li>Route53 for domain management.</li>
+          <li>IAM for secure access control.</li>
+          <li>Fully responsive layout.</li>
+        </ul>
+      </p>
+    </article>
+
+    <!-- Spotify Visualization Project -->
+    <article>
+      <h3>Spotify Visualization Project</h3>
+      <p>
+        This project uses Spotify’s Web API to retrieve data (e.g., user playlists, track information) and visualizes it in interactive charts or graphs.
+      </p>
+      <p>
+        <strong>Key Features:</strong>
+        <ul>
+          <li>Authentication with Spotify (OAuth2).</li>
+          <li>Uses AWS Lambda (Node JS/Python) to process data.</li>
+          <li>Display of user playlists, track popularity, and stats.</li>
+        </ul>
+      </p>
+      <p>
+        <a href="/myspotify/index.html">
+          <button>Spotify Project</button>
+        </a>
+      </p>
+    </article>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Jimi Adeyemi. All rights reserved.</p>
+  </footer>
+
+</body>
 </html>

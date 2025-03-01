@@ -65,7 +65,7 @@ variable "website_alternative_names" {
   default     = []
 }
 
-variable "lambda_file" {
+variable "lambda_template" {
   description = "The name of the Lambda function file"
   type        = string  
 }
@@ -73,11 +73,6 @@ variable "lambda_file" {
 variable "s3_file_list" {
   description = "List of files to upload to S3"
   type        = list(string)
-}
-
-variable "spotify_js_template" {
-  description = "The template file for the Spotify JavaScript"
-  type        = string
 }
 ################################################################################
 # End of File

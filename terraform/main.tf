@@ -14,7 +14,7 @@ module "acm" {
   acm_certificate_name      = local.acm_certificate_name
   domain_name               = var.website_domain_name
   project_name              = var.project_name
-  subject_alternative_names = var.website_alternative_names
+  subject_alternative_names = local.cloudfront_aliases
   route53_hosted_zone_id    = data.aws_route53_zone.existing.zone_id
 }
   
