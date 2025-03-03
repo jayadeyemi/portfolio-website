@@ -2,28 +2,46 @@ import os
 import re
 import sys
 import shutil
+import ast
 
 # Define variables
 if len(sys.argv) < 5:
-    print("Usage: python3 root_outputs_tf_updater.py <PROJECT_ROOT> <EXTRACTION_FOLDER> <EXTRACTED_FILE> <INFRASTRUCTURE_FOLDER>")
+    print("Usage: python3 root_outputs_tf_updater.py <PROJECT_ROOT> <EXTRACTION_FOLDER> <EXTRACTED_FILE> <INFRASTRUCTURE_FOLDER> <TFVARS_FILE> <EXCLUDED_SUBFOLDERS>")
     sys.exit(1)
-
+EXCLUDED_SUBFOLDERS = []
 PROJECT_ROOT = sys.argv[1]
 EXTRACTION_FOLDER = sys.argv[2]
 EXTRACTED_FILE = sys.argv[3]
 INFRASTRUCTURE_FOLDER = sys.argv[4]
+TFVARS_FILE = sys.argv[5]
+
+for arg in sys.argv[6:]:
+    EXCLUDED_SUBFOLDERS.append(arg)
 IAC_FOLDER_NAME = INFRASTRUCTURE_FOLDER.replace("./", "")
 OUTPUT_FILENAME = os.path.join(INFRASTRUCTURE_FOLDER, "outputs.tf")
 
 # Debug print for initial variables
-# print(f"DEBUG: PROJECT_ROOT: {PROJECT_ROOT}")
-# print(f"DEBUG: EXTRACTION_FOLDER: {EXTRACTION_FOLDER}")
-# print(f"DEBUG: EXTRACTED_FILE: {EXTRACTED_FILE}")
-# print(f"DEBUG: INFRASTRUCTURE_FOLDER: {INFRASTRUCTURE_FOLDER}")
-# print(f"DEBUG: IAC_FOLDER_NAME: {IAC_FOLDER_NAME}")
-# print(f"DEBUG: OUTPUT_FILENAME: {OUTPUT_FILENAME}")
+print(f"DEBUG: PROJECT_ROOT: {PROJECT_ROOT}")
+print(f"DEBUG: EXTRACTION_FOLDER: {EXTRACTION_FOLDER}")
+print(f"DEBUG: EXTRACTED_FILE: {EXTRACTED_FILE}")
+print(f"DEBUG: INFRASTRUCTURE_FOLDER: {INFRASTRUCTURE_FOLDER}")
+print(f"DEBUG: IAC_FOLDER_NAME: {IAC_FOLDER_NAME}")
+print(f"DEBUG: OUTPUT_FILENAME: {OUTPUT_FILENAME}")
+print(f"DEBUG: TFVARS_FILE: {TFVARS_FILE}")
+print(f"DEBUG: EXCLUDED_SUBFOLDERS: {EXCLUDED_SUBFOLDERS}")
 
-def main(PROJECT_ROOT=PROJECT_ROOT, EXTRACTION_FOLDER=EXTRACTION_FOLDER, EXTRACTED_FILE=EXTRACTED_FILE, OUTPUT_FILENAME=OUTPUT_FILENAME, INFRASTRUCTURE_FOLDER=INFRASTRUCTURE_FOLDER, IAC_FOLDER_NAME=IAC_FOLDER_NAME):
+# get the frontend app directory and the backend app directory from the tfvars file
+APP_DIR = []
+with open(os.path.join(INFRASTRUCTURE_FOLDER, TFVARS_FILE), "r") as f:
+    for line in f:
+        if "frontend_path" in line or "backend_path" in line:
+            APP_DIR.append(line.split("=")[1].strip().replace("/", "").replace(".", "").replace('"', ""))
+            # print(f"DEBUG: APP_DIR: {APP_DIR}")
+
+# remove fist and last quotes from the excluded subfolders text
+print(f"DEBUG: EXCLUDED_SUBFOLDERS: {EXCLUDED_SUBFOLDERS}")
+
+def main(PROJECT_ROOT=PROJECT_ROOT, EXTRACTION_FOLDER=EXTRACTION_FOLDER, EXTRACTED_FILE=EXTRACTED_FILE, OUTPUT_FILENAME=OUTPUT_FILENAME, INFRASTRUCTURE_FOLDER=INFRASTRUCTURE_FOLDER, IAC_FOLDER_NAME=IAC_FOLDER_NAME, TFVARS_FILE=TFVARS_FILE, APP_DIR=APP_DIR, EXCLUDED_SUBFOLDERS=EXCLUDED_SUBFOLDERS):
     """Main function to extract files from the project directory."""
     
     def create_extraction_folder(extraction_path):
@@ -173,12 +191,12 @@ def main(PROJECT_ROOT=PROJECT_ROOT, EXTRACTION_FOLDER=EXTRACTION_FOLDER, EXTRACT
     # print("DEBUG: Copying root level files")
     copy_files_by_extension(PROJECT_ROOT, EXTRACTION_FOLDER, [".py", ".json"], include_subdirs=False)
     copy_files_by_extension(PROJECT_ROOT, EXTRACTION_FOLDER, [".sh", ".md"], include_subdirs=False)
-    copy_subfolders(PROJECT_ROOT, EXTRACTION_FOLDER, ["app", "lambda"])
+    copy_subfolders(PROJECT_ROOT, EXTRACTION_FOLDER, APP_DIR)
     
     # print("DEBUG: Copying Terraform folder level files")
     copy_subfolders(TERRAFORM_PATH, TERRAFORM_SUBFOLDER, ["modules"])
     copy_files_by_extension(TERRAFORM_PATH, TERRAFORM_SUBFOLDER, [".tf"], include_subdirs=False)
-    copy_specific_file(TERRAFORM_PATH, TERRAFORM_SUBFOLDER, "secrets.tfvars")
+    copy_specific_file(TERRAFORM_PATH, TERRAFORM_SUBFOLDER, TFVARS_FILE)
     
     # print("DEBUG: Extraction process completed!")
     
@@ -187,7 +205,7 @@ def main(PROJECT_ROOT=PROJECT_ROOT, EXTRACTION_FOLDER=EXTRACTION_FOLDER, EXTRACT
     shutil.rmtree(EXTRACTION_FOLDER)
     print("Done! aggregated_code.txt")
     
-    update_tf_output_variables(INFRASTRUCTURE_FOLDER, OUTPUT_FILENAME)
+    update_tf_output_variables(INFRASTRUCTURE_FOLDER, OUTPUT_FILENAME, EXCLUDED_SUBFOLDERS)
     print("Done! outputs.tf")
     
 if __name__ == "__main__":

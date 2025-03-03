@@ -10,7 +10,7 @@ data "aws_route53_zone" "existing" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "${var.lambda_path}${var.lambda_template}"
+  source_file = "${var.backend_path}${var.lambda_template}"
   output_path = local.lambda_zip_path
 }
 

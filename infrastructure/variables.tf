@@ -42,7 +42,7 @@ variable "lambda_filename" {
   type        = string
 }
 
-variable "lambda_path" {
+variable "backend_path" {
   description = "The path to the Lambda function code"
   type        = string
   

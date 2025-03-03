@@ -4,26 +4,27 @@
 # Variables
 ####################################################################################################
 # Execution Code
-FOUR_DIGIT_EXECUTION_CODE=0000 #0/1, 0/1, Any Number, 0/1
+FOUR_DIGIT_EXECUTION_CODE=1111 #0/1, 0/1, Any Number, 0/1
     # Explanation:
     # 1st digit: Update S3 file list in the tfvars file? (using files in the app directory): Yes/No
-    # 2nd digit: Update root outputs.tf file? (using outputs in the terraform modules: Yes/No
+    # 2nd digit: Update outputs.tf in terraform root? (using outputs in the terraform modules): Yes/No
     # 3rd digit: Terraform apply? (using the plan file): Yes/No/Ask
     # 4th digit: Update Cloudfront distribution cache?: Yes/No
 
 # External Directories
-PROJECT_ROOT="../JumpReact"             # Root directory of the project (no trailing slash)
-EXTRACTION_FOLDER="../Extraction"       # Extraction folder for the aggregated code (no trailing slash)
+PROJECT_ROOT="../portfolio-website"     # Root directory of the project (no trailing slash)
+EXTRACTION_FOLDER="./Extraction"        # Extraction folder for the aggregated code (no trailing slash)
 EXTRACTED_FILE="../aggregated_code.txt" # Extracted file from the extraction folder
 
 # Internal Directories
 IAC_DIR="./infrastructure/" # Relative path from root directory to infrastructure directory (trailing slash)
 SCRIPTS_DIR="./scripts/"    # Relative path from root directory to scripts directory (trailing slash)
-OUTPUTS_DIR="./outputs/"    # Relative path from terraform directory to store outputs (trailing slash)
+OUTPUTS_DIR="./outputs/"    # Relative path from IAC directory to store outputs (trailing slash)
 
 # Scripts
-ROOT_OUTPUTS_TF_UPDATER="root_outputs_tf_updater.py"    # Relative path from scripts directory
-S3_FILE_LIST_UPDATER="s3_file_list_updater.py"          # Relative path from scripts directory
+ROOT_OUTPUTS_TF_UPDATER="root_outputs_tf_updater.py" # Relative path from scripts directory
+S3_FILE_LIST_UPDATER="s3_file_list_updater.py"       # Relative path from scripts directory
+EXCLUDED_TF_FOLDERS=""decouplers", "triggers""       # List of folders to exclude by root_outputs_tf_updater.py
 
 # Output files
 TFVARS_FILE="secrets.tfvars"                                # Secrets file for terraform variables
@@ -49,15 +50,15 @@ if [[ $FOUR_DIGIT_EXECUTION_CODE =~ ^[0-9]{4}$ ]]; then
     UPDATE_CLOUDFRONT_DISTRIBUTION_CACHE=${FOUR_DIGIT_EXECUTION_CODE:3:1}
 else
     # Set default values
-    UPDATE_S3_FILE_LIST="FALSE"
-    UPDATE_ROOT_OUTPUTS_TF_FILE="FALSE"
+    UPDATE_S3_FILE_LIST="0"
+    UPDATE_ROOT_OUTPUTS_TF_FILE="0"
     TERRAFORM_APPLY=""
-    UPDATE_CLOUDFRONT_DISTRIBUTION_CACHE="FALSE"
+    UPDATE_CLOUDFRONT_DISTRIBUTION_CACHE="0"
 fi
 
 # Step 1: Update root outputs.tf file by running script (if required)
-if [ "$UPDATE_ROOT_OUTPUTS_TF_FILE" == "TRUE" ]; then
-    python3 $UPDATE_ROOT_OUTPUTS_TF_FILE_SCRIPT $PROJECT_ROOT $EXTRACTION_FOLDER $EXTRACTED_FILE $IAC_DIR
+if [ "$UPDATE_ROOT_OUTPUTS_TF_FILE" == "1" ]; then
+    python3 $UPDATE_ROOT_OUTPUTS_TF_FILE_SCRIPT $PROJECT_ROOT $EXTRACTION_FOLDER $EXTRACTED_FILE $IAC_DIR $TFVARS_FILE $EXCLUDED_TF_FOLDERS
     if [ $? -ne 0 ]; then
         echo "File $UPDATE_ROOT_OUTPUTS_TF_FILE not found at $UPDATE_ROOT_OUTPUTS_TF_FILE_SCRIPT."
         exit 1
@@ -65,7 +66,7 @@ if [ "$UPDATE_ROOT_OUTPUTS_TF_FILE" == "TRUE" ]; then
 fi
 
 # Step 2: Update the S3 file list in the tfvars file by running script (if required)
-if [ "$UPDATE_S3_FILE_LIST" == "TRUE" ]; then
+if [ "$UPDATE_S3_FILE_LIST" == "1" ]; then
     echo "Updating the S3 file list..."
     python3 $UPDATE_S3_FILE_LIST_SCRIPT $APP_DIR $TFVARS_FILE_PATH
     if [ $? -ne 0 ]; then
@@ -75,6 +76,7 @@ if [ "$UPDATE_S3_FILE_LIST" == "TRUE" ]; then
 fi
 
 # Step 3: Get the secret ARN from AWS using the secret name
+# if the secret file is at the expected path
 if [ ! -f "$TFVARS_FILE_PATH" ]; then
     echo "File $TFVARS_FILE not found at $TFVARS_FILE_PATH."
     exit 1
@@ -93,7 +95,7 @@ else
         echo "Secret ARN obtained from AWS: $SECRET_ARN"
         # If the secret does not exist, then create the secret
         if [[ -z "$SECRET_ARN" || "$SECRET_ARN" == "None" ]]; then
-            SECRET_ARN=$(aws secretsmanager create-secret --name "$SECRET_NAME" --description "Secret for Spotify project1" --query 'ARN' --output text)
+            SECRET_ARN=$(aws secretsmanager create-secret --name "$SECRET_NAME" --description "Secret for Spotify project" --query 'ARN' --output text)
             echo "Secret created with ARN: $SECRET_ARN"
         fi
     fi
@@ -133,9 +135,9 @@ function terraform_apply() {
 }
 
 # Step 5: Check if we are applying the plan. If yes - apply directly, if not - exit, else ask for confirmation
-if [ "$TERRAFORM_APPLY" == "TRUE" ]; then
+if [ "$TERRAFORM_APPLY" == "1" ]; then
     terraform_apply
-elif [ "$TERRAFORM_APPLY" == "FALSE" ]; then
+elif [ "$TERRAFORM_APPLY" == "0" ]; then
     echo "TERRAFORM_APPLY is set to FALSE. Continuing without applying the plan."
 else
     read -p "Do you want to apply the plan? (yes/no): " APPLY_PLAN
@@ -145,7 +147,7 @@ else
 fi
 
 # Step 6: Update the Cloudfront distribution cache (if required)
-if [ "$UPDATE_CLOUDFRONT_DISTRIBUTION_CACHE" == "TRUE" ]; then
+if [ "$UPDATE_CLOUDFRONT_DISTRIBUTION_CACHE" == "1" ]; then
     # Extract the cloudfront_distribution_id from terraform outputs
     CLOUDFRONT_DISTRIBUTION_ID=$(terraform output cloudfront_distribution_id) # Extract cloudfront_distribution_id from terraform outputs
     echo "Cloudfront distribution ID obtained from terraform outputs: $CLOUDFRONT_DISTRIBUTION_ID"

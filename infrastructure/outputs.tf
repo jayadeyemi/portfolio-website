@@ -99,14 +99,6 @@ output "spotify_secret_arn" {
   value       = module.secrets.spotify_secret_arn
 }
 
-# File: ./infrastructure/modules/triggers/outputs_eventbridge.tf
-# --------------------------------------------------
-# output "eventbridge_rule_arn" {
-#   description = "The ARN of the CloudWatch EventBridge rule."
-#   value       = module.triggers.eventbridge_rule_arn
-# }
-
-
 # File: ./infrastructure/modules/uploader/outputs_s3_uploads.tf
 # --------------------------------------------------
 # 3. Output the object key or anything else needed

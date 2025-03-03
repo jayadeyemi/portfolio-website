@@ -9,5 +9,6 @@ variable "s3_files_map" {
     s3_key            = string
     content_type      = string
     processed_content = string
+    classification    = string
   }))
 }

@@ -1,7 +1,7 @@
 
 locals {
   resource_prefix                 = "${var.project_name}"
-  lambda_zip_path                 = "${var.lambda_path}${var.lambda_filename}"
+  lambda_zip_path                 = "${var.backend_path}${var.lambda_filename}"
   lambda_role_name                = "${local.resource_prefix}-lambda-role"
   lambda_policy_name              = "${local.resource_prefix}-lambda-policy"
   oac_name                        = "${local.resource_prefix}-oac"
@@ -15,7 +15,7 @@ locals {
   cloudwatch_event_rule_name      = "${local.resource_prefix}-cloudwatch-event-rule"
   cloudfront_aliases              = concat([var.website_domain_name], var.website_alternative_names)
 
-  files_map = {
+  files_map                       = {
     for file in var.s3_file_list : file =>
       endswith(file, ".tmpl") ||
       endswith(file, ".html") ||
@@ -24,7 +24,7 @@ locals {
       ? "text" : "binary"
   }
 
-  processed_content = {
+  processed_content               = {
     for file in var.s3_file_list : file =>
       endswith(file, ".tmpl") ? 
         templatefile("${path.module}/${var.frontend_path}${file}", local.js_variables) :
@@ -34,6 +34,7 @@ locals {
           data.local_file.files[file].content
       )
   }
+  
   js_variables                    = {
       cloudfront_domain = module.frontend.cloudfront_distribution_domain_name
       api_id            = local.lambda_function_name
@@ -45,13 +46,13 @@ locals {
     SPOTIFY_CLIENT_SECRET = var.spotify_client_secret
   }
 
-  s3_files_map = {
+  s3_files_map                    = {
     for file, classification in local.files_map :
     file => {
       # The key that will go into S3
       s3_key = endswith(file, ".tmpl") ? replace(file, ".tmpl", "") : file
 
-      content_type = (
+      content_type      = (
         endswith(file, ".html") ? "text/html" :
         endswith(file, ".css")  ? "text/css" :
         endswith(file, ".js")   ? "application/javascript" :
@@ -64,6 +65,7 @@ locals {
       # If binary, use data.local_file.files[file].content_base64
 
       processed_content = local.processed_content[file]
+      classification    = classification
       
     }
   }
