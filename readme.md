@@ -96,6 +96,7 @@ A fully serverless, production-grade portfolio website featuring multi-user Spot
 ### Initial Setup
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/jayadeyemi/portfolio-website.git
    cd portfolio-website
@@ -107,16 +108,19 @@ A fully serverless, production-grade portfolio website featuring multi-user Spot
    - Set redirect URI to `https://yourdomain.com/api/auth/callback` (replace with your actual domain)
 
 3. **Create Terraform variables:**
+
    ```bash
    cd infrastructure
    cp terraform.tfvars.sample secrets.tfvars
    ```
+
    Edit `secrets.tfvars` with your:
    - AWS region, project suffix, domain name
    - Spotify credentials
    - Owner Spotify user ID and admin email
 
 4. **Initialize and deploy:**
+
    ```bash
    export AWS_PAGER=""
    terraform init
@@ -270,6 +274,7 @@ See [infrastructure/README.md](infrastructure/README.md) for detailed module doc
 ## 🐛 Troubleshooting
 
 **Frontend changes not showing?**
+
 ```bash
 # Invalidate CloudFront cache
 aws cloudfront create-invalidation \
@@ -279,11 +284,13 @@ aws cloudfront create-invalidation \
 ```
 
 **Spotify OAuth not working?**
+
 - Visit `/myspotify/` page and click "Connect Admin Account" to re-authorize
 - Check Lambda logs: `aws logs tail /aws/lambda/portfolio-lambda-function --follow`
 - Verify Spotify app settings at [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)
 
 **Terraform lock issues on WSL?**
+
 ```bash
 # Use the -lock=false flag on all terraform commands
 terraform plan -var-file=secrets.tfvars -lock=false
@@ -316,6 +323,7 @@ LinkedIn: [linkedin.com/in/jayadeyemi](https://www.linkedin.com/in/jayadeyemi/)
 
 | Version | Date | Changes |
 |---------|------|---------|
+| **1.0.1** | 2026-02-28 | Web-based admin OAuth — removed CLI script, updated documentation |
 | **1.0.0** | 2026-02-28 | Production launch — multi-user OAuth, Experience page, comprehensive docs |
 | 0.8.0 | 2026-02-27 | Playlist engine, KMS encryption, project descriptions |
 | 0.5.0 | 2026-02-01 | Initial Spotify integration |
