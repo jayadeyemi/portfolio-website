@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Spotify &mdash; Babasanmi Adeyemi</title>
+  <link rel="stylesheet" href="/myspotify/styles.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="/" class="back-link">&larr; Portfolio</a>
+      <h1>Your Spotify</h1>
+      <div id="auth-controls" class="auth-controls">
+        <a id="login-btn" href="/api/auth/login" class="spotify-login-btn" style="display:none;">Login with Spotify</a>
+        <div id="user-info" style="display:none;">
+          <span id="user-name"></span>
+          <a href="/api/auth/logout" class="spotify-logout-btn">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Policy Update Banner (hidden by default) -->
+    <div id="policy-banner" class="policy-banner" style="display:none;">
+      <p>Our <a href="/privacy.html">Privacy Notice</a> has been updated. Please review the changes.</p>
+      <button id="policy-ack-btn" class="policy-ack-btn">I Acknowledge</button>
+    </div>
+
+    <!-- Auth Error Banner (injected by JS if needed) -->
+
+    <!-- Collage Hero -->
+    <section class="collage-hero">
+      <div id="collage-grid" class="collage-grid"></div>
+      <div class="collage-overlay">
+        <h2>Your Music</h2>
+        <p>A secure, multi-user platform &mdash; connect your Spotify to explore your own data</p>
+      </div>
+    </section>
+
+    <!-- Project Description -->
+    <section class="project-description">
+      <div class="description-inner">
+        <h3>About This Project</h3>
+        <p>
+          This page extends the Spotify pipeline into a <strong>full multi-user application</strong>.
+          Visitors can securely authorize their own Spotify accounts using <strong>OAuth 2.0 with PKCE</strong>
+          (Proof Key for Code Exchange)&mdash;an industry-standard flow where your Spotify credentials
+          are never shared with this application. Upon authorization, the serverless backend fetches your
+          personal listening data (top artists, albums, recently played tracks, and genre breakdowns)
+          directly from the Spotify API and returns it for display.
+        </p>
+        <p>
+          Under the hood, the architecture demonstrates several production-grade patterns:
+          <strong>server-side session management</strong> via DynamoDB with automatic TTL expiration,
+          <strong>envelope encryption</strong> of OAuth tokens using AWS KMS,
+          <strong>least-privilege IAM policies</strong> ensuring each Lambda invocation can only access
+          the requesting user&rsquo;s data, and <strong>HttpOnly secure cookies</strong> for session
+          transport&mdash;eliminating client-side token exposure entirely.
+        </p>
+        <p>
+          The app also features an <strong>intelligent playlist engine</strong> that builds personalized
+          playlists by combining your app-recorded play history with Spotify&rsquo;s recommendation API.
+          Users can tune their preferences&mdash;timeframe, genre selections, and exclusion
+          filters&mdash;and save curated playlists directly to their Spotify account.
+        </p>
+        <p class="tech-highlight">
+          <strong>Tech stack:</strong> Python &middot; AWS Lambda &middot; API Gateway &middot;
+          DynamoDB &middot; KMS &middot; S3 &middot; CloudFront &middot; Spotify OAuth 2.0 (PKCE) &middot;
+          Terraform &middot; JavaScript
+        </p>
+      </div>
+    </section>
+
+    <!-- Invite-Only Notice + Demo Counter -->
+    <section class="invite-notice">
+      <div class="invite-notice-inner">
+        <h3>&#128274; Invite-Only Demo</h3>
+        <p>This Spotify integration is currently in <strong>demo mode</strong> with limited access.
+          To try it out, submit a request below and you&rsquo;ll be notified once approved.</p>
+        <div id="demo-counter" class="demo-counter">
+          <div class="counter-item">
+            <span id="total-requests" class="counter-number">—</span>
+            <span class="counter-label">Requests</span>
+          </div>
+          <div class="counter-item">
+            <span id="approved-count" class="counter-number">—</span>
+            <span class="counter-label">Approved</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Access Request Form (hidden when logged in) -->
+    <section id="access-request-section" class="access-request-section">
+      <h3>Request Access</h3>
+      <p>Fill out the form below to request demo access. You&rsquo;ll receive an email once approved.</p>
+      <form id="access-request-form" class="access-form">
+        <div class="form-group">
+          <label for="req-name">Full Name</label>
+          <input type="text" id="req-name" name="full_name" required placeholder="Your full name" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="req-email">Spotify Email</label>
+          <input type="email" id="req-email" name="spotify_email" required placeholder="email@example.com"
+            autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="req-country">Country</label>
+          <select id="req-country" name="country" required>
+            <option value="">Select your country</option>
+            <option value="US">United States</option>
+            <option value="GB">United Kingdom</option>
+            <option value="CA">Canada</option>
+            <option value="AU">Australia</option>
+            <option value="DE">Germany</option>
+            <option value="FR">France</option>
+            <option value="BR">Brazil</option>
+            <option value="JP">Japan</option>
+            <option value="NG">Nigeria</option>
+            <option value="ZA">South Africa</option>
+            <option value="GH">Ghana</option>
+            <option value="KE">Kenya</option>
+            <option value="IN">India</option>
+            <option value="MX">Mexico</option>
+            <option value="SE">Sweden</option>
+            <option value="NL">Netherlands</option>
+            <option value="ES">Spain</option>
+            <option value="IT">Italy</option>
+            <option value="KR">South Korea</option>
+            <option value="PH">Philippines</option>
+            <option value="CO">Colombia</option>
+            <option value="AR">Argentina</option>
+            <option value="EG">Egypt</option>
+            <option value="PL">Poland</option>
+            <option value="IE">Ireland</option>
+          </select>
+        </div>
+        <button type="submit" class="spotify-login-btn" id="submit-request-btn">Submit Request</button>
+        <p id="form-message" class="form-message" style="display:none;"></p>
+      </form>
+    </section>
+
+    <!-- Navigation Cards -->
+    <section class="nav-cards">
+      <a href="/yourspotify/new-releases/" class="spotify-nav-card">
+        <div class="nav-card-icon">&#127926;</div>
+        <h3>New Releases</h3>
+        <p>Latest album drops on Spotify</p>
+      </a>
+      <a href="/yourspotify/top-artists/" class="spotify-nav-card auth-required">
+        <div class="nav-card-icon">&#11088;</div>
+        <h3>Top Artists</h3>
+        <p>Your most-played artists</p>
+        <span class="login-hint" style="display:none;">Login required</span>
+      </a>
+      <a href="/yourspotify/top-albums/" class="spotify-nav-card auth-required">
+        <div class="nav-card-icon">&#128191;</div>
+        <h3>Top Albums</h3>
+        <p>Albums you listen to the most</p>
+        <span class="login-hint" style="display:none;">Login required</span>
+      </a>
+      <a href="/yourspotify/recent-listens/" class="spotify-nav-card auth-required">
+        <div class="nav-card-icon">&#128260;</div>
+        <h3>Recent Listens</h3>
+        <p>What you&rsquo;ve been playing lately</p>
+        <span class="login-hint" style="display:none;">Login required</span>
+      </a>
+      <a href="/yourspotify/top-genres/" class="spotify-nav-card auth-required">
+        <div class="nav-card-icon">&#127912;</div>
+        <h3>Top Genres</h3>
+        <p>Genre breakdown of your taste</p>
+        <span class="login-hint" style="display:none;">Login required</span>
+      </a>
+      <a href="/yourspotify/frequent-listens/" class="spotify-nav-card auth-required">
+        <div class="nav-card-icon">&#128293;</div>
+        <h3>Frequent Listens</h3>
+        <p>Tracks on heavy rotation this week</p>
+        <span class="login-hint" style="display:none;">Login required</span>
+      </a>
+    </section>
+
+    <!-- Playlist Suggestions (auth required, hidden by default) -->
+    <section id="playlist-section" class="playlist-section" style="display:none;">
+      <h3>&#127925; Curated Playlists For You</h3>
+      <p>AI-generated playlists based on your listening habits. Save them to your Spotify account!</p>
+
+      <!-- Playlist Preferences Panel -->
+      <div id="playlist-prefs" class="playlist-prefs">
+        <!-- Timeframe Selector -->
+        <div class="pref-group">
+          <label class="pref-label">Timeframe</label>
+          <div class="timeframe-pills" id="timeframe-pills">
+            <button class="timeframe-pill" data-value="2w">2 Weeks</button>
+            <button class="timeframe-pill active" data-value="1m">1 Month</button>
+            <button class="timeframe-pill" data-value="3m">3 Months</button>
+          </div>
+        </div>
+
+        <!-- Exclude Listened Toggle -->
+        <div class="pref-group pref-inline">
+          <label class="pref-label" for="exclude-listened">Exclude Listened Tracks</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="exclude-listened" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <!-- Genre Selector (for playlists 2-4) -->
+        <div class="pref-group pref-genres">
+          <label class="pref-label">Preferred Genres <span class="pref-hint">(up to 15 &mdash; Hidden Gems, Energy
+              Boost, Chill Mode)</span></label>
+          <div class="genre-selector" id="genre-selector">
+            <input type="text" id="genre-search" class="genre-search" placeholder="Search and select genres&hellip;">
+            <div id="genre-dropdown" class="genre-dropdown" style="display:none;"></div>
+          </div>
+          <div id="selected-genres" class="selected-genres-tags"></div>
+        </div>
+
+        <!-- Discovery Genre Selector (for playlist 5) -->
+        <div class="pref-group pref-genres">
+          <label class="pref-label">Discovery Genres <span class="pref-hint">(up to 15 &mdash; Discovery
+              Mix)</span></label>
+          <div class="genre-selector" id="discovery-genre-selector">
+            <input type="text" id="discovery-genre-search" class="genre-search"
+              placeholder="Genres to discover&hellip;">
+            <div id="discovery-genre-dropdown" class="genre-dropdown" style="display:none;"></div>
+          </div>
+          <div id="selected-discovery-genres" class="selected-genres-tags"></div>
+        </div>
+
+        <!-- Excluded Genres (for Essentials) -->
+        <div class="pref-group pref-genres">
+          <label class="pref-label">Excluded Genres <span class="pref-hint">(optional &mdash; Essentials
+              playlist)</span></label>
+          <div class="genre-selector" id="excluded-genre-selector">
+            <input type="text" id="excluded-genre-search" class="genre-search"
+              placeholder="Genres to exclude from Essentials&hellip;">
+            <div id="excluded-genre-dropdown" class="genre-dropdown" style="display:none;"></div>
+          </div>
+          <div id="selected-excluded-genres" class="selected-genres-tags"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pref-actions">
+          <button id="save-prefs-btn" class="save-prefs-btn">Save Preferences</button>
+          <button id="regenerate-btn" class="regenerate-btn">&#128260; Regenerate Playlists</button>
+        </div>
+
+        <!-- Stats Display -->
+        <div id="playlist-stats" class="playlist-stats" style="display:none;"></div>
+      </div>
+
+      <div id="playlists-container" class="playlists-container">
+        <p class="loading-text">Loading your personalized playlists&hellip;</p>
+      </div>
+    </section>
+
+    <!-- Country Stats -->
+    <section id="country-stats-section" class="country-stats-section">
+      <h3>&#127758; Music Around the World</h3>
+      <p>What are listeners from different countries into?</p>
+      <div id="country-stats" class="country-stats">
+        <p class="loading-text">Loading stats&hellip;</p>
+      </div>
+    </section>
+
+    <!-- Data Management -->
+    <section id="data-management" class="data-management" style="display:none;">
+      <h3>Your Data</h3>
+      <p>You can delete all your stored data at any time.</p>
+      <button id="delete-data-btn" class="delete-data-btn">Delete My Data</button>
+    </section>
+
+    <!-- Link to owner section -->
+    <section class="your-spotify-cta">
+      <p>Want to see what Jimi listens to? <a href="/myspotify/">View My Spotify &rarr;</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/privacy.html">Privacy Notice</a>
+      <span>&middot;</span>
+      <a href="/cookies.html">Cookie Notice</a>
+    </div>
+    <p>&copy; 2025 Babasanmi Adeyemi. Your data is encrypted and stored securely.</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+
+</html>

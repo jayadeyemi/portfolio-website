@@ -1,0 +1,117 @@
+################################################################################
+# Terraform Variables — Sample / Template
+# INSTRUCTIONS: Copy this file to 'secrets.tfvars' and fill in the values below
+#
+# ⚠️  SECURITY: secrets.tfvars contains sensitive data — NEVER commit to Git.
+#     It is listed in .gitignore by default.
+################################################################################
+
+################################################################################
+# AWS & Project Configuration
+################################################################################
+aws_region    = "us-east-1"   # AWS region for main resources (CloudFront requires us-east-1 for certs)
+project_name  = "portfolio"   # Project name used in resource naming
+project_suffix = "xxx00"      # 5-char unique suffix (used in S3 bucket name to ensure global uniqueness)
+
+################################################################################
+# Domain & Networking
+################################################################################
+website_domain_name       = "example.com"
+website_alternative_names = ["www.example.com"]
+cloudfront_price_class    = "PriceClass_100"  # PriceClass_100 (lowest cost, NA/EU), PriceClass_All (global)
+
+################################################################################
+# Secrets & API Credentials
+################################################################################
+# Spotify OAuth Credentials
+# Get these from: https://developer.spotify.com/dashboard
+spotify_client_id     = "YOUR_SPOTIFY_CLIENT_ID_HERE"
+spotify_client_secret = "YOUR_SPOTIFY_CLIENT_SECRET_HERE"
+
+# AWS Secrets Manager
+# Where to store Spotify refresh token & other secrets
+secrets_manager_secret_name = "SpotifySecrets"
+
+# Lambda & Backend
+lambda_runtime = "python3.12"
+
+################################################################################
+# Application Configuration
+################################################################################
+# Owner's persistent Spotify User ID (data that appears without login)
+owner_spotify_user_id = "your_spotify_username"
+
+# Admin & Contact Email
+admin_email = "admin@example.com"
+
+# Policy Version (YYYY-MM-DD) — update when privacy/cookie policy changes
+policy_version = "2026-02-28"
+
+################################################################################
+# File Paths (relative to infrastructure/ directory)
+################################################################################
+frontend_path   = "../frontend_files/"
+backend_path    = "../backend_files/"
+lambda_template = "lambda_function.py"
+lambda_filename = "lambda_function.zip"
+
+################################################################################
+# S3 Bucket File List
+# Specify all frontend asset files to upload to S3 (relative to frontend_files/)
+################################################################################
+s3_file_list = [
+  # Main pages
+  "index.html",
+  "experience.html",
+  "projects.html",
+  "contact.html",
+  "privacy.html",
+  "cookies.html",
+  
+  # Assets
+  "styles.css",
+  "scripts.js",
+  "profile_pic.jpg",
+  
+  # My Spotify (owner's data)
+  "myspotify/index.html",
+  "myspotify/main.js.tmpl",
+  "myspotify/styles.css",
+  "myspotify/subpage.js",
+  "myspotify/new-releases/index.html",
+  "myspotify/top-artists/index.html",
+  "myspotify/top-albums/index.html",
+  "myspotify/recent-listens/index.html",
+  "myspotify/frequent-listens/index.html",
+  "myspotify/top-genres/index.html",
+  
+  # Your Spotify (visitors' OAuth data)
+  "yourspotify/index.html",
+  "yourspotify/main.js",
+  "yourspotify/top-artists/index.html",
+  "yourspotify/top-albums/index.html",
+  "yourspotify/recent-listens/index.html",
+  "yourspotify/top-genres/index.html",
+  "yourspotify/frequent-listens/index.html",
+  "yourspotify/new-releases/index.html",
+]
+
+################################################################################
+# Domain Registrant Contact
+# Required for Route 53 domain registration (if not already registered)
+################################################################################
+domain_registrant = {
+  first_name     = "Your"
+  last_name      = "Name"
+  email          = "your.email@example.com"
+  phone_number   = "+1.2025551234"
+  address_line_1 = "123 Main Street"
+  city           = "Springfield"
+  state          = "IL"
+  zip_code       = "62701"
+  country_code   = "US"
+}
+
+################################################################################
+# End of File
+################################################################################

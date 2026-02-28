@@ -38,16 +38,23 @@ variable "lambda_policy_name" {
   type        = string
 }
 
-# variable "module_name" {
-#   description = "Prefix for resource names in this module"
-#   type        = string
-# }
+variable "dynamodb_table_arns" {
+  description = "ARNs of DynamoDB tables the Lambda needs access to"
+  type        = list(string)
+  default     = []
+}
 
-# variable "runtime" {
-#   description = "Lambda runtime (e.g., nodejs14.x)"
-#   type        = string
-#   default     = "nodejs14.x"
-# }
+variable "kms_key_arn" {
+  description = "ARN of the KMS key for token encryption/decryption"
+  type        = string
+  default     = ""
+}
+
+variable "ses_identity_arn" {
+  description = "ARN of the SES domain identity for sending emails"
+  type        = string
+  default     = ""
+}
 
 # variable "login_handler" {
 #   description = "Handler for the login Lambda function (e.g., login.handler)"

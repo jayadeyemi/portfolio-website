@@ -1,221 +1,329 @@
-# My Protfolio Web Application with Terraform
+# Portfolio Website — Serverless Spotify Data Visualization
 
-This project demonstrates a two‑page AWS web application. It consists of a static landing page and an interactive data visualization page that fetches dynamic data from an AWS Lambda function via API Gateway. The entire infrastructure is provisioned using Terraform, ensuring a repeatable, manageable, and scalable deployment process.
+A fully serverless, production-grade portfolio website featuring multi-user Spotify data visualization, infrastructure-as-code with Terraform, and OAuth 2.0 PKCE authentication on AWS.
 
-## Technologies Used
-- **AWS Services:**  
-  - Amazon S3 for static website hosting
-  - Amazon CloudFront for content delivery
-  - Amazon API Gateway for creating RESTful APIs
-  - AWS Lambda for serverless compute
-  - Amazon Route 53 for DNS management
-- **Infrastructure as Code:**
-  - Terraform for provisioning and managing AWS resources
-- **Programming Languages:**
-  - Python for AWS Lambda function code
-  - HTML, CSS for the web application
-  - JavaScript for the interactive page
-- **Development Tools:**
-  - Visual Studio Code for development
-  - Git for version control
-- **Deployment Tools:**
-  - AWS CLI for managing AWS resources
-  - Terraform CLI for provisioning infrastructure
-- **Version Control:**
-  - Git for source code management
-- **Package Management:**
-  - Python's `pip` for managing Lambda function dependencies
-  - Node.js and npm for managing JavaScript dependencies
-- **Testing and Debugging:**
-  - Visual Studio Code for local development and debugging
-  - AWS CloudWatch for monitoring and logging Lambda function execution
+**Repository:** [jayadeyemi/portfolio-website](https://github.com/jayadeyemi/portfolio-website)  
+**Live Site:** [babasanmiadeyemi.com](https://babasanmiadeyemi.com)  
 
-## Website Architecture Overview
-- **Landing Page: Static Website:**  
-  A static landing page hosted on Amazon S3. It is served via Amazon CloudFront, and the domain is managed using Amazon Route 53. The static page includes HTML, CSS, and images.
-  It is publicly accessible and serves as the entry point for users.
+---
 
-- **Visualization Project Page: Interactive Visualization:**  
-  A single-page application (SPA) that fetches dynamic data from an AWS Lambda function. The SPA is hosted on Amazon S3 and served via Amazon CloudFront. It uses JavaScript to make API calls to the backend and render visualizations based on the fetched data. 
-  A Lambda function runs every night at 3:00AM, and processes data from S3 and returns it to S3 in a desired format. 
-  The SPA is hosted on Amazon S3 and served via Amazon CloudFront. It uses JavaScript to make API calls to the backend and render visualizations based on the fetched data.
+## ✨ Features
 
-## Directory Structure
-The project is organized into several directories, each serving a specific purpose. Below is a high-level overview of the directory structure:
-```plaintext
-JumpReact/
-├── terraform/              # Terraform configurations for AWS resources
-│   ├── backend.tf          # Remote backend configuration for Terraform state
-│   ├── data.tf             # Data source definitions
-│   ├── locals.tf           # Local values used in Terraform
-│   ├── main.tf             # Primary Terraform configuration
-│   ├── outputs.tf          # Outputs to expose resource information
-│   ├── providers.tf        # Provider configurations (AWS)
-│   ├── terraform.tfvars    # Variable values for default environment
-│   ├── variables.tf        # Variable definitions
-│   |
-│   ├── modules/            # Reusable modules for Terraform resources
-│   │   ├── api_gateway/    # API Gateway module
-│   │   │   ├── main.tf
-│   │   │   ├── variables.tf
-│   │   │   └── outputs.tf
-│   │   │
-│   │   ├── cloudfront/     # CloudFront distribution module
-│   │   │   ├── main.tf
-│   │   │   ├── variables.tf
-│   │   │   └── outputs.tf
-│   │   │
-│   │   ├── iam/            # IAM roles and policies module
-│   │   │   ├── main.tf
-│   │   │   ├── variables.tf
-│   │   │   └── outputs.tf
-│   │   │
-│   │   ├── lambda/         # Lambda function module
-│   │   │   ├── main.tf
-│   │   │   ├── variables.tf
-│   │   │   └── outputs.tf
-│   │   │
-│   │   ├── route53/        # Route 53 DNS module
-│   │   │   ├── main.tf
-│   │   │   ├── variables.tf
-│   │   │   └── outputs.tf
-│   │   │
-│   │   └── s3/             # S3 bucket module
-│   │       ├── main.tf
-│   │       ├── variables.tf
-│   │       └── outputs.tf
-│   │
-│   └── environments/       # Environment-specific configurations (optional)
-│       ├── example/       # Example environment configurations
-│       │   ├── main.tf
-│       │   ├── variables.tf
-│       │   ├── backend.tf
-│       │
-│       └── prod/           # Production environment-specific configurations
-│           ├── main.tf
-│           ├── variables.tf
-│           ├── backend.tf
-│           └── terraform.tfvars
-│
-├── app/                # Application assets
-│   ├── static/         # Static assets for the landing page
-│   │   ├── index.html
-│   │   ├── styles.css
-│   │   └── images/
-│   │       ├── logo1.png
-│   │       ├── logo2.png
-│   │       ├── logo3.png
-│   │       └── photo.png
-│   │
-│   └── interactive/    # Interactive visualization page assets
-│       ├── interactive.html
-│       ├── styles.css
-│       └── scripts/
-│           └── main.js
-│
-├── lambda/             # AWS Lambda function code and dependencies
-│   ├── lambda_function.py
-│   └── requirements.txt
-│
-├── .vscode/            # VS Code workspace settings and launch configurations
-│   ├── settings.json
-│   ├── tasks.json
-│   └── launch.json
-│
-├── .gitignore          # Git ignore file
-└── README.md           # Project documentation
+- **Serverless Architecture**: S3, CloudFront, Lambda, API Gateway, DynamoDB — no servers to manage
+- **Multi-User Spotify Integration**: OAuth 2.0 PKCE for secure visitor authorization
+- **Encrypted Token Storage**: KMS encryption for sensitive Spotify tokens
+- **Automated Data Pipeline**: EventBridge-triggered Lambda processes Spotify data on a schedule
+- **Infrastructure as Code**: Fully modular Terraform with reusable modules
+- **CDN Delivery**: CloudFront with automatic cache invalidation
+- **Professional Design**: Responsive, dark-mode portfolio with timeline components
+- **Version Control**: Full Git history with releases and tagged versions
+
+---
+
+## 📐 Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ Users Visit: babasanmiadeyemi.com                           │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+        Route 53 DNS Resolution
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│ CloudFront Distribution (E2OMVBFKSAZZIT)                    │
+│ - TLS Termination (ACM Certificate)                         │
+│ - Global Edge Caching                                       │
+└─────────────────┬───────────────────────────────────────────┘
+                  │
+        Origin Access Control (OAC)
+                  │
+                  ▼
+┌─────────────────────────────────────────────────────────────┐
+│ S3 Bucket (portfolio-bucket-bja01)                          │
+│ - Static HTML, CSS, JS, Images (27 files)                   │
+└─────────────────────────────────────────────────────────────┘
+                     │
+         API Requests via JavaScript
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│ API Gateway (HTTP API t2avwvlxad)                           │
+│ - POST /api/auth/authorize (Spotify OAuth)                  │
+│ - POST /api/auth/callback (Exchange code for token)         │
+│ - GET /api/spotify/[endpoint] (Proxy to Spotify API)        │
+└─────────────────┬───────────────────────────────────────────┘
+                  │
+                  ▼
+┌─────────────────────────────────────────────────────────────┐
+│ AWS Lambda (portfolio-lambda-function)                      │
+│ - OAuth token exchange                                      │
+│ - Spotify API request proxying                              │
+│ - Session management                                        │
+│ - KMS encryption/decryption                                 │
+└─────────────────┬───────────────────────────────────────────┘
+                  │
+      ┌───────────┴───────────┐
+      │                       │
+      ▼                       ▼
+┌──────────────────────┐  ┌──────────────────────┐
+│ DynamoDB Tables      │  │ KMS Key              │
+│ - users              │  │ - AES-256 Encryption │
+│ - sessions           │  │ - Automatic Rotation │
+│ - spotify_tokens     │  └──────────────────────┘
+│ - insights           │
+│ - access_requests    │
+│ - play_history       │
+└──────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ EventBridge Schedule (Every 3 days)                         │
+│ - Triggers Lambda to refresh owner's Spotify data          │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-## Web Application Structure
-- **Static Page:**  
-  Located in `app/static/`, this folder contains the landing page (HTML, CSS, images) served publicly.
-- **Interactive Page:**  
-  Located in `app/interactive/`, this folder contains the interactive visualization page (HTML, CSS, JavaScript). It fetches data from the AWS Lambda function via API Gateway. The JavaScript code handles API calls and data rendering.
-- **Assets:**
-  The `app/static/` folder contains static assets such as images and stylesheets used in the landing page. The `app/interactive/` folder contains the interactive page's HTML, CSS, and JavaScript files. The JavaScript code handles API calls and data rendering.
+---
 
-- **Lambda Function:**
-  The `lambda/` folder contains the AWS Lambda function code and its dependencies. The Lambda function is responsible for processing of dynamic data. It is a scheduled function that runs daily and fetches data from an external API. The function is triggered by an API Gateway endpoint, which allows the interactive page to make HTTP requests to it. The Lambda function is written in Python and uses the `requests` library to make HTTP requests to the external API. The function processes the data and returns it in a format suitable for the interactive page.
+## 🚀 Quick Start
 
-## Setup Instructions
-1. **Clone the Repository:**
+### Prerequisites
+
+- AWS Account with IAM credentials configured locally
+- Terraform >= 1.0
+- Git
+- Spotify Developer App (register at [developer.spotify.com](https://developer.spotify.com/dashboard))
+
+### Initial Setup
+
+1. **Clone the repository:**
    ```bash
-    git clone git clone https://github.com/jayadeyemi/JumpReact.git
-    cd JumpReact
-    ```
-2. **Install Dependencies:**
-    - For the Lambda function, navigate to the `lambda/` directory and install dependencies:
-      ```bash
-      cd lambda
-      pip install -r requirements.txt -t .
-      ```
-    - For the interactive page, navigate to the `app/interactive/` directory and install any necessary JavaScript dependencies (if applicable).
-      ```bash
-      cd app/interactive
-      npm install
-      ```
-3. **Configure AWS Credentials:**
-    - Ensure your AWS credentials are set up. You can configure them using the AWS CLI:
-      ```bash
-      aws configure
-      ```
-    - Alternatively, set environment variables for `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION`.   
-3. **Local Development:**
-   - Modify your application assets in the `app/` folder.
-   - Update your Lambda function code in the `lambda/` folder as needed.
-   - Test changes locally before deploying
+   git clone https://github.com/jayadeyemi/portfolio-website.git
+   cd portfolio-website
+   ```
 
-2. **Terraform Setup:**
-   - Ensure you have [Terraform](https://www.terraform.io/downloads.html) installed.
-   - Navigate to the `terraform/` directory:
-     ```bash
-     cd terraform
-     terraform init
-     ```
-   - Review the planned changes:
-     ```bash
-     terraform plan -out tfplan -var-file=./terraform/environments/prod/terraform.tfvars
-     ```
-   - Apply the configuration:
-     ```bash
-     terraform apply tfplan
-     ```
+2. **Create Spotify OAuth app:**
+   - Visit [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)
+   - Create a new app and note `Client ID` and `Client Secret`
+   - Set redirect URI to `http://127.0.0.1:8888/callback`
 
-3. **Local Development:**
-   - Modify your application assets in the `app/` folder.
-   - Update your Lambda function code in the `lambda/` folder as needed.
-   - Test changes locally before deploying.
+3. **Create Terraform variables:**
+   ```bash
+   cd infrastructure
+   cp terraform.tfvars.sample secrets.tfvars
+   ```
+   Edit `secrets.tfvars` with your:
+   - AWS region, project suffix, domain name
+   - Spotify credentials
+   - Owner Spotify user ID and admin email
 
-## Deployment Process
-- **Terraform:**  
-  Terrraform deploys the infrastructure, including S3 buckets, CloudFront distributions, API Gateway endpoints, Lambda functions, IAM roles, and Route 53 records. The `terraform/` directory contains all the necessary configurations to provision the AWS resources.
-  
-- **Landing Page: Static Content**  
-  Your static and interactive pages are uploaded to Amazon S3. CloudFront serves these pages globally, while Route 53 routes DNS traffic to CloudFront.
+4. **Initialize and deploy:**
+   ```bash
+   export AWS_PAGER=""
+   terraform init
+   terraform plan -var-file=secrets.tfvars -out=tfplan -lock=false
+   terraform apply tfplan -lock=false
+   ```
 
-- **Dynamic Content:**  
-  The interactive page calls an API Gateway endpoint, which triggers the Lambda function in the `lambda/` folder to fetch or process data.
+5. **Authorize Spotify (one-time):**
+   ```bash
+   cd ../scripts
+   python spotify_oauth_setup.py
+   ```
 
-- **Terraform:**  
-  Use Terraform to provision and update your infrastructure, ensuring a consistent and automated deployment process.
+---
 
-## Additional Notes
+## 📁 Directory Structure
 
-- **Security:**  
-  Sensitive assets can be kept private by using specific S3 bucket policies and object ACLs. For example, you can configure policies to prevent public access to files in a `private/` directory.
-  
-- **Environment Management:**  
-  The optional `environments/` folder under Terraform can be used to manage different configurations for development, staging, and production environments.
+```
+portfolio-website/
+├── frontend_files/                  # All static frontend assets
+│   ├── index.html                   # Home page (About)
+│   ├── experience.html              # Professional experience & skills
+│   ├── projects.html                # Featured projects
+│   ├── contact.html                 # Contact info
+│   ├── privacy.html                 # Privacy notice
+│   ├── cookies.html                 # Cookie policy
+│   ├── styles.css                   # Main stylesheet
+│   ├── scripts.js                   # Shared utilities
+│   ├── profile_pic.jpg              # Profile picture
+│   ├── myspotify/                   # Owner's Spotify data (public)
+│   └── yourspotify/                 # Visitor OAuth flow + data
+│
+├── backend_files/
+│   ├── lambda_function.py           # Lambda handler (2232 lines)
+│   ├── data_extractor.py            # Extracts owner Spotify data
+│   └── README.md                    # Backend documentation
+│
+├── infrastructure/                  # Terraform IaC
+│   ├── main.tf                      # Root module
+│   ├── locals.tf                    # Computed values
+│   ├── variables.tf                 # Variable definitions
+│   ├── outputs.tf                   # Outputs
+│   ├── providers.tf                 # AWS provider config
+│   ├── terraform.tfvars.sample      # ⭐ COPY & EDIT to secrets.tfvars
+│   ├── README.md                    # Infrastructure docs
+│   └── modules/
+│       ├── frontend/                # S3, CloudFront, Route53, ACM, OAC
+│       ├── backend/                 # Lambda, IAM
+│       ├── dynamodb/                # 6 DynamoDB tables
+│       ├── secrets/                 # Secrets Manager
+│       ├── kms/                     # KMS key
+│       ├── api_gateway/             # HTTP API
+│       ├── triggers/                # EventBridge
+│       └── uploader/                # S3 object upload
+│
+├── scripts/
+│   └── spotify_oauth_setup.py       # One-time Spotify authorization
+│
+├── create.sh                        # Dev helper
+├── destroy.sh                       # Dev helper
+└── README.md                        # 👈 This file
+```
 
-- **AWS Credentials:**  
-  Make sure your AWS credentials are properly configured (via environment variables, AWS CLI configuration, or another method) before running Terraform commands.
+---
 
-## License
+## 🔐 Security Highlights
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+- **OAuth 2.0 PKCE**: Secure Spotify authorization with code exchange
+- **KMS Encryption**: All Spotify tokens encrypted at rest with AES-256
+- **HTTPS/TLS**: CloudFront ACM certificate for all traffic
+- **Least Privilege IAM**: Lambda has minimal required permissions
+- **Origin Access Control**: S3 bucket restricted to CloudFront only
 
-## Acknowledgments
+---
 
-- [AWS Documentation](https://docs.aws.amazon.com/)
-- [Terraform Documentation](https://www.terraform.io/docs)
-- [Visual Studio Code Documentation](https://code.visualstudio.com/docs)
+## 💰 Cost Optimization
+
+Estimated monthly cost: **~$4-5** (production infrastructure)
+
+| Service | Monthly Cost |
+|---------|--------------|
+| Lambda | $0.20 |
+| DynamoDB | $1-2 |
+| API Gateway | $0.50 |
+| S3 | <$0.10 |
+| CloudFront | $0.50 |
+| Route 53 | $0.50 |
+| KMS | $1.00 |
+| Secrets Manager | $0.40 |
+
+All services are within the free tier if account is <12 months old.
+
+---
+
+## 🛠️ Development & Deployment
+
+### Update Frontend
+
+```bash
+cd infrastructure
+# Edit frontend_files/ as needed, then:
+terraform apply -var-file=secrets.tfvars -lock=false
+
+# Invalidate CloudFront cache manually:
+aws cloudfront create-invalidation \
+  --distribution-id E2OMVBFKSAZZIT \
+  --paths "/*" \
+  --profile jayadeyemi
+```
+
+### Update Lambda
+
+```bash
+# Edit backend_files/lambda_function.py, then:
+terraform apply -var-file=secrets.tfvars -lock=false
+```
+
+### Release Process
+
+```bash
+# Commit changes
+git add frontend_files/ infrastructure/ backend_files/
+git commit -m "feat: description of changes"
+git push origin Dynamic-Login
+
+# On main branch, merge with release tag
+git checkout main
+git merge --ff-only Dynamic-Login
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin main --tags
+```
+
+---
+
+## 📋 Terraform Modules
+
+| Module | Resources | Purpose |
+|--------|-----------|---------|
+| **frontend** | CloudFront, S3, Route53, ACM, OAC | Static website delivery |
+| **backend** | Lambda, IAM role, CloudWatch logs | API backend |
+| **dynamodb** | 6 DynamoDB tables with TTL | Data persistence |
+| **kms** | KMS key (AES-256) | Encryption at rest |
+| **api_gateway** | HTTP API, routes, CORS | API endpoint |
+| **uploader** | S3 objects | Frontend asset upload |
+| **triggers** | EventBridge schedule rule | Periodic data refresh |
+| **secrets** | Secrets Manager | Sensitive data storage |
+
+See [infrastructure/README.md](infrastructure/README.md) for detailed module documentation.
+
+---
+
+## 🐛 Troubleshooting
+
+**Frontend changes not showing?**
+```bash
+# Invalidate CloudFront cache
+aws cloudfront create-invalidation \
+  --distribution-id E2OMVBFKSAZZIT \
+  --paths "/*" \
+  --profile jayadeyemi
+```
+
+**Spotify OAuth not working?**
+```bash
+# Re-authorize Spotify
+cd scripts && python spotify_oauth_setup.py
+```
+
+**Terraform lock issues on WSL?**
+```bash
+# Use the -lock=false flag on all terraform commands
+terraform plan -var-file=secrets.tfvars -lock=false
+```
+
+For more details, see [infrastructure/README.md](infrastructure/README.md#-troubleshooting).
+
+---
+
+## 📖 Additional Resources
+
+- [AWS Lambda Best Practices](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html)
+- [Spotify Web API](https://developer.spotify.com/documentation/web-api)
+- [Terraform AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- [OAuth 2.0 PKCE (RFC 7636)](https://datatracker.ietf.org/doc/rfc7636/)
+- [AWS KMS Best Practices](https://docs.aws.amazon.com/kms/latest/developerguide/best-practices.html)
+
+---
+
+## 👤 Author
+
+**Babasanmi Adeyemi**  
+Portfolio: [babasanmiadeyemi.com](https://babasanmiadeyemi.com)  
+GitHub: [@jayadeyemi](https://github.com/jayadeyemi)  
+LinkedIn: [linkedin.com/in/jayadeyemi](https://www.linkedin.com/in/jayadeyemi/)
+
+---
+
+## 🔄 Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| **1.0.0** | 2026-02-28 | Production launch — multi-user OAuth, Experience page, comprehensive docs |
+| 0.8.0 | 2026-02-27 | Playlist engine, KMS encryption, project descriptions |
+| 0.5.0 | 2026-02-01 | Initial Spotify integration |
+| 0.1.0 | 2025-10-01 | Foundation — basic site + Terraform modules |
+
+---
+
+**Last Updated:** February 28, 2026  
+**Repository:** [jayadeyemi/portfolio-website](https://github.com/jayadeyemi/portfolio-website)

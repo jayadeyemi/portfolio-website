@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Genres &mdash; Your Spotify</title>
+  <link rel="stylesheet" href="/myspotify/styles.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="/yourspotify/" class="back-link">&larr; Your Spotify</a>
+      <h1>Top Genres</h1>
+    </nav>
+  </header>
+  <main>
+    <h2 class="page-title">Top Genres</h2>
+    <p class="page-subtitle">Genre breakdown of your taste</p>
+    <p id="status">Loading genres...</p>
+    <div id="content-grid" class="content-grid"
+         data-url="/api/me/top-genres"
+         data-type="genres"></div>
+  </main>
+  <footer>
+    <div class="footer-links">
+      <a href="/privacy.html">Privacy Notice</a>
+      <span>&middot;</span>
+      <a href="/cookies.html">Cookie Notice</a>
+    </div>
+    <p>&copy; 2025 Babasanmi Adeyemi.</p>
+  </footer>
+  <script src="/myspotify/subpage.js"></script>
+</body>
+
+</html>

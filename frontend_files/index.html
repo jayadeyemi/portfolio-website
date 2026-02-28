@@ -1,122 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>My Homepage</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Babasanmi Adeyemi &mdash; DevOps Engineer</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="header-container">
-      <h1>Welcome to My Portfolio Webpage</h1>
-      <img src="profile_pic.jpg" alt="Jimi Adeyemi" class="profile-pic">
+  <!-- Navigation -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">Jimi Adeyemi</a>
+      <button class="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="/" class="active">About</a></li>
+        <li><a href="/experience.html">Experience</a></li>
+        <li><a href="/projects.html">Projects</a></li>
+        <li><a href="/myspotify/">My Spotify</a></li>
+        <li><a href="/yourspotify/">Your Spotify</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
     </div>
-    <nav>
-      <a href="#about">About Me</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
-    
-    <!-- Contact Section -->
-    <section id="contact" class="section-container">
-      <h2>Contact</h2>
-      <p>
-        I'd love to connect! Whether you have an opportunity, a project idea, or just want to say hello, feel free to reach out.
-      </p>
-      <p>
-        Email: <a href="mailto:babasanmiadeyemi@gmail.com">babasanmiadeyemi@gmail.com</a><br>
-        LinkedIn: <a href="https://www.linkedin.com/in/jayadeyemi" target="_blank">linkedin.com/in/jayadeyemi</a><br>
-        Instagram: <a href="https://www.instagram.com/jayadeyemi" target="_blank">instagram.com/jayadeyemi</a>
-        GitHub: <a href="https://https://github.com/jayadeyemi/" target="_blank">github.com/jayadeyemi</a>
-      </p>
-    </section>
+  </nav>
 
-  <!-- About Me Section -->
-  <section id="about" class="section-container">
-    <h2>About Me</h2>
-    <p>
-      Hello! I’m <strong>Babasanmi Adeyemi</strong>, but everyone calls me Jimi. I'm a dedicated Data Engineer with a passion for transforming raw data into strategic assets. 
-      I specialize in designing and implementing <strong>scalable, robust data pipelines</strong> and cloud-native architectures that empower 
-      organizations to make data-driven decisions.
-    </p>
-    <p>
-      I am interested in growing my knowledge in <strong>Data Engineering and Cloud Architecting</strong>. My interest has led me to grow my knowledge in Infrastructure as Code 
-      using <strong>Terraform</strong>, <strong>CI/CD</strong> pipelines, <strong>SQL</strong>, <strong>NoSQL</strong>, <strong>ETL</strong>, <strong>data modeling</strong>, 
-      and <strong>data warehousing</strong>.
-      I excel at automating complex ETL processes, optimizing data workflows, and ensuring secure, repeatable, high-performance deployments.
-    </p>
-    <p>
-      My expertise lies in transforming vast, complex datasets into clear, actionable insights through <strong>engaging visualizations</strong> and 
-      smart data management strategies. By leveraging cloud technologies and automation, I can help businesses unlock the full potential of their data, 
-      driving operational excellence and business growth.
-    </p>
-    <p>
-      I have hands-on experience with a variety of tools and technologies, and have worked with clients across diverse industries, including FCMG, Oil & Gas, Utilities, and Telecommunications.
-      I’m always up for a new challenge and love learning new things, so feel free to reach out if you’d like to connect or collaborate on a project!
-      I am always eager to tackle new challenges and collaborate with talented teams to deliver innovative solutions that drive business success.
-    </p>
-    <p>
-      When I’m not coding or building data pipelines, you can find me exploring the great outdoors, chilling with friends, or enjoying a good book. 
-      I’m also a big fan of music and love discovering new artists and tracks on Spotify.
-    </p>
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-content reveal">
+      <img src="profile_pic.jpg" alt="Babasanmi Adeyemi" class="profile-pic">
+      <h1>Babasanmi &ldquo;Jimi&rdquo; Adeyemi</h1>
+      <p class="tagline">DevOps Engineer</p>
+      <p class="subtitle">Co-founder, <strong>Marigold-Kilt LLC</strong></p>
+    </div>
   </section>
 
-  <!-- Projects Section -->
-  <section id="projects" class="section-container">
-    <h2>Projects</h2>
+  <!-- About -->
+  <section id="about">
+    <div class="container reveal">
+      <h2>About Me</h2>
+      <p>
+        I&rsquo;m a DevOps Engineer with a Master&rsquo;s degree from Indiana University and hands-on
+        experience building reliable, automated infrastructure. I specialize in designing scalable
+        CI/CD pipelines, infrastructure-as-code solutions, and cloud-native architectures that
+        help teams ship faster with confidence.
+      </p>
+      <p>
+        Through <strong>Marigold-Kilt LLC</strong>, I deliver DevOps and cloud engineering
+        services to clients across FMCG, Oil &amp; Gas, Utilities, and Telecommunications. My work
+        emphasizes automation, cost optimization, and security best practices.
+      </p>
+    </div>
+  </section>
 
-    <!-- My Portfolio Website Project -->
-    <article>
-      <h3>Project 1: My Portfolio Website Project</h3>
-      <p>
-        The current website is a personal project I created to showcase my work and skills.
-        It includes an overview of my background, selected projects, and 
-        contact information.
-        It is still under construction and I will be adding more features soon.
-      </p>
-      <p>
-        <strong>Key Features:</strong>
-        <ul>
-          <li>Built with HTML, CSS, JavaScript for the frontend.</li>
-          <li>Lambda, DynamoDB, and S3 for the backend.</li>
-          <li>Certificate Manager for HTTPS support.</li>
-          <li>Hosted on AWS with CloudFront for fast global delivery.</li>
-          <li>Route53 for domain management.</li>
-          <li>IAM for secure access control.</li>
-          <li>Fully responsive layout.</li>
-        </ul>
-      </p>
-    </article>
+  <!-- Expertise -->
+  <section id="expertise">
+    <div class="container reveal">
+      <h2>Expertise</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h3>Cloud Architecture</h3>
+          <p>AWS (Lambda, S3, CloudFront, Route 53, IAM, DynamoDB, API Gateway, EventBridge)</p>
+        </div>
+        <div class="skill-card">
+          <h3>Infrastructure as Code</h3>
+          <p>Terraform &amp; CloudFormation &mdash; modular, reusable, cost-optimized deployments</p>
+        </div>
+        <div class="skill-card">
+          <h3>CI/CD &amp; Automation</h3>
+          <p>GitHub Actions, ArgoCD, GitOps workflows, automated testing &amp; deployment pipelines</p>
+        </div>
+        <div class="skill-card">
+          <h3>Container Orchestration</h3>
+          <p>Kubernetes (EKS, AKS, GKE), Docker, Helm, KRO &mdash; multi-cloud workloads</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Spotify Visualization Project -->
-    <article>
-      <h3>Spotify Visualization Project</h3>
-      <p>
-        This project uses Spotify’s Web API to retrieve data (e.g., user playlists, track information) and visualizes it in interactive charts or graphs.
+  <!-- Certifications -->
+  <section id="certifications">
+    <div class="container reveal">
+      <h2>Certifications</h2>
+      <ul class="cert-list">
+        <li>AWS Certified DevOps Engineer &mdash; Professional</li>
+        <li>AWS Certified Solutions Architect &mdash; Associate</li>
+        <li>AWS Certified Cloud Practitioner</li>
+        <li>HashiCorp Certified: Terraform Associate (003)</li>
+        <li>AWS Academy Graduate &mdash; Cloud Architecting</li>
+        <li>AWS Academy Graduate &mdash; Cloud Web Application Builder</li>
+        <li>AWS Academy Graduate &mdash; Cloud Foundations</li>
+      </ul>
+      <p class="cert-link">
+        <a href="https://www.credly.com/users/jayadeyemi" target="_blank" rel="noopener">View badges on Credly
+          &rarr;</a>
       </p>
-      <p>
-        <strong>Key Features:</strong>
-        <ul>
-          <li>Authentication with Spotify (OAuth2).</li>
-          <li>Uses AWS Lambda (Node JS/Python) to process data.</li>
-          <li>Display of user playlists, track popularity, and stats.</li>
-        </ul>
-      </p>
-      <p>
-        <a href="/myspotify/index.html">
-          <button>Spotify Project</button>
-        </a>
-      </p>
-    </article>
+    </div>
   </section>
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Jimi Adeyemi. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="/privacy.html">Privacy Notice</a>
+      <span>&middot;</span>
+      <a href="/cookies.html">Cookie Notice</a>
+    </div>
+    <p>&copy; 2025 Babasanmi Adeyemi &mdash; Marigold-Kilt LLC. All rights reserved.</p>
   </footer>
 
+  <script src="scripts.js"></script>
 </body>
+
 </html>

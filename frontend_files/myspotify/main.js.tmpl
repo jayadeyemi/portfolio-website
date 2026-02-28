@@ -1,41 +1,70 @@
-// main.js
+/* My Spotify Homepage — Owner's Public Data (no auth required) */
+(function () {
+  "use strict";
 
-// Replace with your actual API Gateway URL
-const apiUrl = "https://portfolio-lambda-function.execute-api.us-east-2.amazonaws.com/prod/data";
+  /* ── Collage ── */
+  var DATA_URLS = ["/data/spotify_data.json", "/api/owner/top-artists", "/api/owner/top-albums"];
+  var collageGrid = document.getElementById("collage-grid");
 
-// Initialize the chart using Chart.js
-const ctx = document.getElementById('dataChart').getContext('2d');
-let chart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Value'],
-    datasets: [{
-      label: 'Dynamic Value',
-      data: [0],
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      borderColor: 'rgba(75, 192, 192, 1)',
-      borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-      y: { beginAtZero: true }
+  function extractImages(data) {
+    var images = [];
+    if (data.albums) {
+      data.albums.forEach(function (a) { if (a.image) images.push(a.image); });
     }
+    if (data.artists) {
+      data.artists.forEach(function (a) { if (a.image) images.push(a.image); });
+    }
+    if (data.tracks) {
+      data.tracks.forEach(function (t) { if (t.image) images.push(t.image); });
+    }
+    return images;
   }
-});
 
-// Function to fetch JSON data from your API and update the chart
-async function updateChart() {
-  try {
-    const response = await fetch(apiUrl);
-    const result = await response.json();
-    // Assuming your JSON response has a property "value"
-    chart.data.datasets[0].data[0] = result.value;
-    chart.update();
-  } catch (error) {
-    console.error('Error fetching data:', error);
+  function renderCollage(images) {
+    if (!collageGrid) return;
+    var unique = [];
+    var seen = {};
+    images.forEach(function (img) {
+      if (!seen[img]) {
+        seen[img] = true;
+        unique.push(img);
+      }
+    });
+    var selected = unique.slice(0, 24);
+    collageGrid.innerHTML = "";
+    selected.forEach(function (src) {
+      var img = document.createElement("img");
+      img.src = src;
+      img.alt = "Album cover";
+      img.loading = "lazy";
+      collageGrid.appendChild(img);
+    });
   }
-}
 
-// Update the chart
-updateChart();
+  function loadCollage() {
+    var allImages = [];
+    var completed = 0;
+
+    DATA_URLS.forEach(function (url) {
+      var opts = {};
+      if (url.indexOf("/api/") === 0) opts.credentials = "include";
+      fetch(url, opts)
+        .then(function (res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          allImages = allImages.concat(extractImages(data));
+        })
+        .catch(function () { /* Silently skip unavailable data files */ })
+        .finally(function () {
+          completed++;
+          if (completed === DATA_URLS.length) {
+            renderCollage(allImages);
+          }
+        });
+    });
+  }
+
+  loadCollage();
+})();

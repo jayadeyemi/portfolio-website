@@ -5,7 +5,8 @@ resource "aws_lambda_function" "data_processor" {
   role             = aws_iam_role.data_processor_role.arn
   filename         = var.lambda_zip_path
   source_code_hash = filebase64sha256(var.lambda_zip_path)
-  timeout          = 300
+  timeout          = 60
+  memory_size      = 256
   environment {
     variables = var.lambda_environment_variables
   }
@@ -45,16 +46,55 @@ resource "aws_iam_role_policy" "data_processor_policy" {
       {
         Effect   = "Allow",
         Action   = [
-          "s3:PutObject",
-          "s3:GetObject",
           "s3:ListBucket"
         ],
-        Resource = var.frontend_bucket_arn 
+        Resource = var.frontend_bucket_arn
       },
       {
         Effect   = "Allow",
-        Action   = [ "secretsmanager:GetSecretValue" ],
+        Action   = [
+          "s3:PutObject",
+          "s3:GetObject"
+        ],
+        Resource = "${var.frontend_bucket_arn}/*"
+      },
+      {
+        Effect   = "Allow",
+        Action   = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:PutSecretValue"
+        ],
         Resource = var.spotify_secret_arn
+      },
+      {
+        Effect   = "Allow",
+        Action   = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem",
+          "dynamodb:Query"
+        ],
+        Resource = concat(
+          var.dynamodb_table_arns,
+          [for arn in var.dynamodb_table_arns : "${arn}/index/*"]
+        )
+      },
+      {
+        Effect   = "Allow",
+        Action   = [
+          "kms:Encrypt",
+          "kms:Decrypt"
+        ],
+        Resource = var.kms_key_arn
+      },
+      {
+        Effect   = "Allow",
+        Action   = [
+          "ses:SendEmail",
+          "ses:SendRawEmail"
+        ],
+        Resource = var.ses_identity_arn
       }
     ]
   })

@@ -14,11 +14,6 @@ variable "website_domain_name" {
   type        = string
 }
 
-variable "route53_hosted_zone_id" {
-  description = "The ID of the Route 53 hosted zone"
-  type        = string
-}
-
 variable "website_alternative_names" {
   description = "A list of alternative domain names for the website"
   type        = list(string)
@@ -72,4 +67,26 @@ variable "frontend_bucket_name" {
 variable "acm_certificate_name" {
   type        = string
   description = "Name tag for the ACM certificate"
+}
+
+variable "domain_registrant" {
+  description = "Contact details for domain registration (admin, registrant, and tech contacts)"
+  sensitive   = true
+  type = object({
+    first_name     = string
+    last_name      = string
+    email          = string
+    phone_number   = string
+    address_line_1 = string
+    city           = string
+    state          = string
+    zip_code       = string
+    country_code   = string
+  })
+}
+
+variable "api_origin_domain" {
+  description = "Domain name of the API Gateway endpoint (without https://). Leave empty to skip API origin."
+  type        = string
+  default     = ""
 }

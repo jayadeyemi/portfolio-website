@@ -4,18 +4,20 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
 }
 
 
 provider "aws" {
-  region = var.aws_region
+  region  = var.aws_region
+  profile = "jayadeyemi"
 }
 
 provider "aws" {
-  alias  = "us_east_1"
-  region = "us-east-1"
+  alias   = "us_east_1"
+  region  = "us-east-1"
+  profile = "jayadeyemi"
 }
 

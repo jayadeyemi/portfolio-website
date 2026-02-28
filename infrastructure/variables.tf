@@ -9,6 +9,12 @@ variable "project_name" {
   type        = string
 } 
 
+variable "project_suffix" {
+  description = "Unique suffix appended to globally-scoped resource names (e.g. S3 bucket). Change this if the default name is already taken."
+  type        = string
+  default     = "bja01"
+}
+
 
 variable "website_domain_name" {
   description = "The website domain name"
@@ -74,6 +80,41 @@ variable "s3_file_list" {
   description = "List of files to upload to S3"
   type        = list(string)
 }
+
+variable "domain_registrant" {
+  description = "Contact details for domain registration (admin, registrant, and tech contacts)"
+  sensitive   = true
+  type = object({
+    first_name     = string
+    last_name      = string
+    email          = string
+    phone_number   = string
+    address_line_1 = string
+    city           = string
+    state          = string
+    zip_code       = string
+    country_code   = string
+  })
+}
+
+variable "owner_spotify_user_id" {
+  description = "Spotify user ID of the site owner (permanent login, no logout)"
+  type        = string
+  default     = ""
+}
+
+variable "policy_version" {
+  description = "Privacy policy version string. Change to notify users of updates."
+  type        = string
+  default     = "2026-02-27"
+}
+
+variable "admin_email" {
+  description = "Admin email address for access request notifications"
+  type        = string
+  default     = ""
+}
+
 ################################################################################
 # End of File
 ################################################################################

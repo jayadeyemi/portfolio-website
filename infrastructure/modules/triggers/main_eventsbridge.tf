@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_event_rule" "lambda_schedule" {
   name                = var.cloudwatch_event_rule_name
-  description         = "Trigger Lambda function every hour"
-  schedule_expression = "rate(1 hour)"
+  description         = "Trigger Lambda function every 3 days at 03:00 UTC"
+  schedule_expression = "rate(3 days)"
 }
 
 resource "aws_cloudwatch_event_target" "lambda_target" {

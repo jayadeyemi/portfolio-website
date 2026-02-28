@@ -12,6 +12,16 @@ output "acm_certificate_domain_validation_options" {
 ##############################################################################################################
 # Purpose: Outputs for the Route53 Section.
 ##############################################################################################################
+output "route53_hosted_zone_id" {
+  description = "The ID of the Terraform-managed Route 53 hosted zone"
+  value       = aws_route53_zone.primary.zone_id
+}
+
+output "route53_hosted_zone_nameservers" {
+  description = "Nameservers to configure at your domain registrar"
+  value       = aws_route53_zone.primary.name_servers
+}
+
 output "route53_record_fqdn" {
   description = "The DNS record created for the domain"
   value       = aws_route53_record.static_site_record.fqdn
