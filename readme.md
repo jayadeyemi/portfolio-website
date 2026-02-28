@@ -104,7 +104,7 @@ A fully serverless, production-grade portfolio website featuring multi-user Spot
 2. **Create Spotify OAuth app:**
    - Visit [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)
    - Create a new app and note `Client ID` and `Client Secret`
-   - Set redirect URI to `http://127.0.0.1:8888/callback`
+   - Set redirect URI to `https://yourdomain.com/api/auth/callback` (replace with your actual domain)
 
 3. **Create Terraform variables:**
    ```bash
