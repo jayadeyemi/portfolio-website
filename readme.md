@@ -124,11 +124,11 @@ A fully serverless, production-grade portfolio website featuring multi-user Spot
    terraform apply tfplan -lock=false
    ```
 
-5. **Authorize Spotify (one-time):**
-   ```bash
-   cd ../scripts
-   python spotify_oauth_setup.py
-   ```
+5. **Authorize admin Spotify account:**
+   - Visit your deployed website's `/myspotify/` page
+   - Click "Connect Admin Account" button
+   - Complete Spotify OAuth authorization
+   - Your credentials will be permanently stored and refreshed automatically
 
 ---
 
@@ -172,8 +172,7 @@ portfolio-website/
 │       ├── triggers/                # EventBridge
 │       └── uploader/                # S3 object upload
 │
-├── scripts/
-│   └── spotify_oauth_setup.py       # One-time Spotify authorization
+├── scripts/                         # (Empty — CLI scripts deprecated)
 │
 ├── create.sh                        # Dev helper
 ├── destroy.sh                       # Dev helper
@@ -280,10 +279,9 @@ aws cloudfront create-invalidation \
 ```
 
 **Spotify OAuth not working?**
-```bash
-# Re-authorize Spotify
-cd scripts && python spotify_oauth_setup.py
-```
+- Visit `/myspotify/` page and click "Connect Admin Account" to re-authorize
+- Check Lambda logs: `aws logs tail /aws/lambda/portfolio-lambda-function --follow`
+- Verify Spotify app settings at [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)
 
 **Terraform lock issues on WSL?**
 ```bash

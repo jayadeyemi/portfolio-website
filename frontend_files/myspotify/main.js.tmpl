@@ -2,6 +2,40 @@
 (function () {
   "use strict";
 
+  /* ── Admin Auth UI ── */
+  var adminLoginBtn = document.getElementById("admin-login-btn");
+  var adminStatus = document.getElementById("admin-status");
+
+  // Check if admin is already authenticated
+  fetch("/api/auth/status", { credentials: "include" })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (data.logged_in && data.is_owner) {
+        // Admin is authenticated
+        if (adminLoginBtn) adminLoginBtn.style.display = "none";
+        if (adminStatus) {
+          adminStatus.style.display = "";
+          adminStatus.innerHTML = '<span class="admin-status-connected">&#10004; Admin Connected</span>';
+        }
+      } else {
+        // Not authenticated or not owner
+        if (adminLoginBtn) adminLoginBtn.style.display = "";
+        if (adminStatus) adminStatus.style.display = "none";
+      }
+    })
+    .catch(function () {
+      // Error checking status — show login button
+      if (adminLoginBtn) adminLoginBtn.style.display = "";
+      if (adminStatus) adminStatus.style.display = "none";
+    });
+
+  // Admin login button click
+  if (adminLoginBtn) {
+    adminLoginBtn.addEventListener("click", function () {
+      window.location.href = "/api/auth/login";
+    });
+  }
+
   /* ── Collage ── */
   var DATA_URLS = ["/data/spotify_data.json", "/api/owner/top-artists", "/api/owner/top-albums"];
   var collageGrid = document.getElementById("collage-grid");

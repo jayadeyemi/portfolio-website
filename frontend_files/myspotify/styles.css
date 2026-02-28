@@ -406,6 +406,47 @@ footer {
   font-weight: 600
 }
 
+/* ── Admin Panel ── */
+.admin-panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  gap: 16px;
+}
+
+.admin-login-btn {
+  background: rgba(29, 185, 84, 0.1);
+  border: 1px solid var(--green);
+  color: var(--green);
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-login-btn:hover {
+  background: var(--green);
+  color: #000;
+  transform: scale(1.02);
+}
+
+.admin-status {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.admin-status-connected {
+  color: var(--green);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 /* ── Policy Banner ── */
 .policy-banner {
   background: rgba(29, 185, 84, .12);
