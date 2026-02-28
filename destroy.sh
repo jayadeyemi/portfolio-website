@@ -1,17 +1,27 @@
-cd terraform
-# list all resources
-terraform state list
-read -p "Remove secret resource? (y/n): " confirm
-if [ "$confirm" == "y" ]; then
-terraform state rm module.secretsmanager.aws_secretsmanager_secret.spotify_secret
+cd infrastructure
+DESTROY_LIST_FILE="./outputs/terraform_state_list.txt"
+# list all resources to file
+terraform state list > $DESTROY_LIST_FILE
+
+# Confirm before removing resources
+if [ -f "$DESTROY_LIST_FILE" ]; then
+    cat $DESTROY_LIST_FILE
+    echo "Above is the List of resources to remove from terraform state."
+
+    read -p "remove terraform state for file: $DESTROY_LIST_FILE? (y/n): " confirm
+
+    if [ "$confirm" == "y" ]; then
+      while IFS= read -r line; do
+        terraform state rm "$line"
+      done < "$DESTROY_LIST_FILE"
+    fi
 fi
 
-read -p "Remove random_id resource? (y/n): " confirm
-if [ "$confirm" == "y" ]; then
-terraform state rm random_integer.random_id
-fi
-
+# Confirm before destroying all resources
+terraform state list > $DESTROY_LIST_FILE
+cat $DESTROY_LIST_FILE
+echo "Above is the List of resources to remove from terraform state."
 read -p "destroy all resources? (y/n): " confirm
 if [ "$confirm" == "y" ]; then
-terraform destroy -var-file=./terraform.tfvars
+    terraform destroy -var-file=./secrets.tfvars -auto-approve
 fi

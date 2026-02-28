@@ -1,0 +1,70 @@
+/* My Spotify Homepage — Owner's Public Data (no auth required) */
+(function () {
+  "use strict";
+
+  /* ── Collage ── */
+  var DATA_URLS = ["/data/spotify_data.json", "/api/owner/top-artists", "/api/owner/top-albums"];
+  var collageGrid = document.getElementById("collage-grid");
+
+  function extractImages(data) {
+    var images = [];
+    if (data.albums) {
+      data.albums.forEach(function (a) { if (a.image) images.push(a.image); });
+    }
+    if (data.artists) {
+      data.artists.forEach(function (a) { if (a.image) images.push(a.image); });
+    }
+    if (data.tracks) {
+      data.tracks.forEach(function (t) { if (t.image) images.push(t.image); });
+    }
+    return images;
+  }
+
+  function renderCollage(images) {
+    if (!collageGrid) return;
+    var unique = [];
+    var seen = {};
+    images.forEach(function (img) {
+      if (!seen[img]) {
+        seen[img] = true;
+        unique.push(img);
+      }
+    });
+    var selected = unique.slice(0, 24);
+    collageGrid.innerHTML = "";
+    selected.forEach(function (src) {
+      var img = document.createElement("img");
+      img.src = src;
+      img.alt = "Album cover";
+      img.loading = "lazy";
+      collageGrid.appendChild(img);
+    });
+  }
+
+  function loadCollage() {
+    var allImages = [];
+    var completed = 0;
+
+    DATA_URLS.forEach(function (url) {
+      var opts = {};
+      if (url.indexOf("/api/") === 0) opts.credentials = "include";
+      fetch(url, opts)
+        .then(function (res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          allImages = allImages.concat(extractImages(data));
+        })
+        .catch(function () { /* Silently skip unavailable data files */ })
+        .finally(function () {
+          completed++;
+          if (completed === DATA_URLS.length) {
+            renderCollage(allImages);
+          }
+        });
+    });
+  }
+
+  loadCollage();
+})();

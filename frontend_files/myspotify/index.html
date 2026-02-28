@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Spotify &mdash; Babasanmi Adeyemi</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="/" class="back-link">&larr; Portfolio</a>
+      <h1>My Spotify</h1>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Collage Hero -->
+    <section class="collage-hero">
+      <div id="collage-grid" class="collage-grid"></div>
+      <div class="collage-overlay">
+        <h2>Jimi&rsquo;s Music</h2>
+        <p>A live, serverless data pipeline &mdash; built and operated by Jimi Adeyemi</p>
+      </div>
+    </section>
+
+    <!-- Project Description -->
+    <section class="project-description">
+      <div class="description-inner">
+        <h3>About This Project</h3>
+        <p>
+          This page is a <strong>live demonstration of cloud engineering and data pipeline design</strong>.
+          An automated ETL pipeline&mdash;built with Python on AWS Lambda&mdash;authenticates with the
+          Spotify Web API, extracts my listening data (top artists, albums, recently played tracks,
+          genre breakdowns, and new releases), transforms the raw JSON into structured datasets, and
+          loads the results into an S3 bucket. The pipeline runs on a scheduled EventBridge trigger,
+          so the data you see here is always current without any manual intervention.
+        </p>
+        <p>
+          The entire infrastructure is provisioned and managed through <strong>modular Terraform</strong>:
+          S3 for storage, CloudFront with TLS for content delivery, Route&nbsp;53 for DNS, API Gateway
+          for the backend, and IAM policies scoped to least-privilege access. Every component&mdash;from
+          the Lambda execution role to the CloudFront cache behavior&mdash;is defined as code, version-controlled,
+          and reproducible.
+        </p>
+        <p class="tech-highlight">
+          <strong>Tech stack:</strong> Python &middot; AWS Lambda &middot; S3 &middot; CloudFront &middot;
+          EventBridge &middot; Secrets Manager &middot; Terraform &middot; Spotify Web API
+        </p>
+      </div>
+    </section>
+
+    <!-- Navigation Cards -->
+    <section class="nav-cards">
+      <a href="new-releases/" class="spotify-nav-card">
+        <div class="nav-card-icon">&#127926;</div>
+        <h3>New Releases</h3>
+        <p>Latest album drops on Spotify</p>
+      </a>
+      <a href="top-artists/" class="spotify-nav-card">
+        <div class="nav-card-icon">&#11088;</div>
+        <h3>Top Artists</h3>
+        <p>My most-played artists</p>
+      </a>
+      <a href="top-albums/" class="spotify-nav-card">
+        <div class="nav-card-icon">&#128191;</div>
+        <h3>Top Albums</h3>
+        <p>Albums I listen to the most</p>
+      </a>
+      <a href="recent-listens/" class="spotify-nav-card">
+        <div class="nav-card-icon">&#128260;</div>
+        <h3>Recent Listens</h3>
+        <p>What I&rsquo;ve been playing lately</p>
+      </a>
+      <a href="top-genres/" class="spotify-nav-card">
+        <div class="nav-card-icon">&#127912;</div>
+        <h3>Top Genres</h3>
+        <p>Genre breakdown of my taste</p>
+      </a>
+      <a href="frequent-listens/" class="spotify-nav-card">
+        <div class="nav-card-icon">&#128293;</div>
+        <h3>Frequent Listens</h3>
+        <p>Tracks on heavy rotation this week</p>
+      </a>
+    </section>
+
+    <!-- Link to visitor section -->
+    <section class="your-spotify-cta">
+      <p>Want to see <em>your</em> Spotify data? <a href="/yourspotify/">Connect your account &rarr;</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="/privacy.html">Privacy Notice</a>
+      <span>&middot;</span>
+      <a href="/cookies.html">Cookie Notice</a>
+    </div>
+    <p>&copy; 2025 Babasanmi Adeyemi. Data refreshed daily via AWS Lambda.</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+
+</html>

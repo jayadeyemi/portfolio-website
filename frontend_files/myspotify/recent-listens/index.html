@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recent Listens — My Spotify</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="/myspotify/" class="back-link">&larr; My Spotify</a>
+      <h1>Recent Listens</h1>
+    </nav>
+  </header>
+  <main>
+    <h2 class="page-title">Recent Listens</h2>
+    <p class="page-subtitle">What I&rsquo;ve been playing lately</p>
+    <p id="status">Loading tracks...</p>
+    <div id="content-grid" class="content-grid" data-url="/api/owner/recent-listens" data-type="tracks"></div>
+  </main>
+  <footer>
+    <div class="footer-links">
+      <a href="/privacy.html">Privacy Notice</a>
+      <span>&middot;</span>
+      <a href="/cookies.html">Cookie Notice</a>
+    </div>
+    <p>&copy; 2025 Babasanmi Adeyemi. Data refreshed daily via AWS Lambda.</p>
+  </footer>
+  <script src="../subpage.js"></script>
+</body>
+
+</html>
